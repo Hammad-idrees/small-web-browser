@@ -11,6 +11,7 @@
     "dev": "pnpm build:contracts && concurrently --names contracts,api,web --prefix-colors gray,blue,green \"pnpm --filter @small-web/contracts dev\" \"pnpm --filter api dev\" \"pnpm --filter web dev\"",
     "build": "pnpm build:contracts && pnpm --filter api build && pnpm --filter web build",
     "build:contracts": "pnpm --filter @small-web/contracts build",
+    "seed": "pnpm build:contracts && pnpm --filter api seed",
     "lint": "pnpm -r --if-present lint",
     "typecheck": "pnpm build:contracts && pnpm -r --if-present typecheck",
     "test": "pnpm build:contracts && pnpm -r --if-present test",
