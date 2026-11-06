@@ -6,6 +6,7 @@ import { parseEnv } from './config/env.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
 import { PeopleModule } from './people/people.module.js';
+import { RenderModule } from './render/render.module.js';
 import { SitesModule } from './sites/sites.module.js';
 import { VisitsModule } from './visits/visits.module.js';
 
@@ -15,6 +16,7 @@ import { VisitsModule } from './visits/visits.module.js';
     DatabaseModule,
     HealthModule,
     PeopleModule,
+    RenderModule,
     SitesModule,
     VisitsModule,
   ],

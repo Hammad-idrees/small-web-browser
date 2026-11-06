@@ -281,7 +281,7 @@ export const SITES: readonly SeedSite[] = [
 </form>
 <p><a href="javascript:window.top.location='https://example.com/'">A link that is really a script</a></p>
 <p><a href="https://example.com/" target="_blank">A link that tries to open a new window</a></p>
-<p><a href="tidepool.zz">An honest link to The Tide Pool Journal, which should still work.</a></p>
+<p style="position: relative; z-index: 1"><a href="tidepool.zz">An honest link to The Tide Pool Journal, which should still work.</a></p>
 <p>If you can read this inside its frame, with your address bar and your history undisturbed, then the page has failed to do anything it set out to do. <div class="cover">`,
   },
 ];
