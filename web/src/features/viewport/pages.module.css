@@ -5,53 +5,127 @@
   color: var(--ink);
 }
 
-/* Start page */
+/* Start page: hero. Always black, like the toolbar above it. */
 
-.home {
+.hero {
   position: relative;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: clamp(40px, 9vh, 88px) 24px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: max(560px, 100%);
+  padding: 72px 24px 88px;
+  overflow: hidden;
   isolation: isolate;
+  background: var(--chrome);
+  color: var(--chrome-ink);
+  text-align: center;
 }
 
-.rings {
+/* A faint grid that fades out toward the edges, and a green glow beneath the headline. */
+.hero::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+}
+
+.heroGlow {
   position: absolute;
   z-index: -1;
-  top: -60px;
-  right: -90px;
-  width: 400px;
-  height: 400px;
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 0.5;
-  opacity: 0.32;
+  bottom: -30%;
+  left: 50%;
+  width: min(900px, 120%);
+  aspect-ratio: 2 / 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(61 252 143 / 16%), transparent);
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
-.eyebrow {
-  margin: 0 0 18px;
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 28px;
+  padding: 6px 14px 6px 12px;
+  border: 1px solid var(--chrome-line);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 3%);
+  color: var(--chrome-ink-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.chipDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
 }
 
 .headline {
-  margin: 0 0 18px;
-  font-family: var(--font-serif);
-  font-size: clamp(38px, 6.4vw, 62px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 26px;
+  font-size: clamp(40px, 6.8vw, 92px);
   font-weight: 400;
-  letter-spacing: -0.022em;
-  line-height: 1.04;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
 }
 
-.headline em {
-  display: block;
-  color: var(--ink-soft);
-  font-style: italic;
+.lineFaint,
+.lineMid {
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
 }
 
+.lineFaint {
+  background-image: linear-gradient(180deg, #4a4a4a, #6e6e6e);
+}
+
+.lineMid {
+  background-image: linear-gradient(180deg, #6e6e6e, #9a9a9a);
+}
+
+.lineBright {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22em;
+  color: var(--chrome-ink);
+}
+
+.glyph {
+  width: 0.82em;
+  height: 0.82em;
+  color: var(--neon);
+  filter: drop-shadow(0 0 14px rgb(61 252 143 / 55%));
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    filter: drop-shadow(0 0 22px rgb(61 252 143 / 80%));
+  }
+}
+
+.heroLede {
+  max-width: 34em;
+  margin: 0;
+  color: #8a8a8a;
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.55;
+}
+
+/* Shared by the nowhere and status pages. */
 .lede {
   max-width: 50ch;
   margin: 0;
@@ -60,11 +134,77 @@
   line-height: 1.6;
 }
 
+.heroActions {
+  margin-top: 40px;
+}
+
+.cta {
+  height: 50px;
+  padding: 0 26px;
+  border: 1px solid rgb(61 252 143 / 45%);
+  border-radius: 12px;
+  background: #0a0a0a;
+  color: var(--chrome-ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgb(61 252 143 / 8%),
+    0 0 28px -4px rgb(61 252 143 / 35%),
+    inset 0 0 16px rgb(61 252 143 / 8%);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.cta:hover {
+  border-color: var(--neon);
+  box-shadow:
+    0 0 0 1px rgb(61 252 143 / 20%),
+    0 0 40px -2px rgb(61 252 143 / 50%),
+    inset 0 0 20px rgb(61 252 143 / 12%);
+  transform: translateY(-1px);
+}
+
+.cta:focus-visible {
+  outline-color: var(--neon);
+}
+
+/* Start page: places to begin, on white. */
+
+.begin {
+  --ink: #0a0a0a;
+  --ink-soft: #525252;
+  --line: #e5e5e5;
+  --surface-raised: #ffffff;
+  --accent: #0a7f43;
+  --shadow: rgb(0 0 0 / 22%);
+
+  padding: 72px 24px 88px;
+  background: #ffffff;
+  color: var(--ink);
+  color-scheme: light;
+}
+
+.beginInner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.beginTitle {
+  margin: 0 0 28px;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
 .places {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin: 44px 0 0;
+  gap: 14px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -103,8 +243,9 @@
 
 .placeTitle {
   margin-top: 4px;
-  font-family: var(--font-serif);
   font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1.25;
 }
 
@@ -204,10 +345,18 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .rings {
-    top: -40px;
-    right: -130px;
-    width: 300px;
-    height: 300px;
+  .hero {
+    padding: 56px 16px 72px;
+  }
+
+  .lineBright {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph {
+    animation: none;
   }
 }

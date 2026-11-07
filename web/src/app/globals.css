@@ -2,13 +2,26 @@
   color-scheme: light;
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    var(--font-display-face, ui-sans-serif), system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
   --font-serif:
     'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, ui-serif, serif;
   --font-mono:
     ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, Menlo, monospace;
 
-  --chrome: #edeae2;
+  /* The browser's own frame is always black, with neon green for what is live. */
+  --chrome: #050505;
+  --chrome-raised: #111111;
+  --chrome-hover: #1a1a1a;
+  --chrome-line: #1f1f1f;
+  --chrome-ink: #f4f4f4;
+  --chrome-ink-soft: #a1a1a1;
+  --chrome-ink-faint: #666666;
+  --neon: #3dfc8f;
+  --neon-strong: #6dffab;
+  --neon-glow: rgb(61 252 143 / 22%);
+  --on-neon: #04140b;
+
   --surface: #fbfaf6;
   --surface-raised: #ffffff;
   --surface-sunken: #efece4;
@@ -18,9 +31,10 @@
   --ink: #1d2422;
   --ink-soft: #55605c;
   --ink-faint: #7f8985;
-  --accent: #0d6e6e;
-  --accent-strong: #0a5757;
-  --accent-glow: rgb(13 110 110 / 16%);
+  /* A deeper green than the neon, so text in it stays readable on white. */
+  --accent: #0a7f43;
+  --accent-strong: #076634;
+  --accent-glow: rgb(10 127 67 / 16%);
   --on-accent: #ffffff;
   --shadow: rgb(38 44 40 / 40%);
   --shadow-soft: rgb(38 44 40 / 8%);
@@ -34,20 +48,19 @@
   :root {
     color-scheme: dark;
 
-    --chrome: #15191a;
-    --surface: #1c2122;
-    --surface-raised: #232829;
-    --surface-sunken: #2a3031;
-    --control: #262c2d;
-    --control-hover: #2f3637;
-    --line: #333a3b;
-    --ink: #eaeee9;
-    --ink-soft: #aab3ae;
-    --ink-faint: #7d8783;
-    --accent: #4fbdb5;
-    --accent-strong: #6fd0c8;
-    --accent-glow: rgb(79 189 181 / 18%);
-    --on-accent: #0c1a1a;
+    --surface: #0c0c0c;
+    --surface-raised: #141414;
+    --surface-sunken: #1b1b1b;
+    --control: #1b1b1b;
+    --control-hover: #242424;
+    --line: #262626;
+    --ink: #f2f2f2;
+    --ink-soft: #a6a6a6;
+    --ink-faint: #737373;
+    --accent: #3dfc8f;
+    --accent-strong: #6dffab;
+    --accent-glow: rgb(61 252 143 / 18%);
+    --on-accent: #04140b;
     --shadow: rgb(0 0 0 / 70%);
     --shadow-soft: rgb(0 0 0 / 30%);
     --alert-surface: #33241d;

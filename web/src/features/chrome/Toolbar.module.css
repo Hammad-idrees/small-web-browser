@@ -1,9 +1,22 @@
+/* The toolbar is always black, whatever the page below it uses. */
 .toolbar {
+  --ink: var(--chrome-ink);
+  --ink-soft: var(--chrome-ink-soft);
+  --ink-faint: var(--chrome-ink-faint);
+  --control: var(--chrome-raised);
+  --control-hover: var(--chrome-hover);
+  --line: var(--chrome-line);
+  --surface-raised: #0b0b0b;
+  --accent: var(--neon);
+  --accent-glow: var(--neon-glow);
+
   position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 10px 16px;
+  color: var(--ink);
+  color-scheme: dark;
 }
 
 .navGroup {
@@ -32,8 +45,24 @@
 }
 
 .logo {
-  margin-right: 6px;
-  color: var(--accent);
+  display: flex;
+  gap: 9px;
+  width: auto;
+  margin-right: 14px;
+  padding: 0 8px 0 4px;
+}
+
+.logoMark {
+  display: grid;
+  color: var(--neon);
+  filter: drop-shadow(0 0 6px var(--neon-glow));
+}
+
+.wordmark {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .logo:hover:not(:disabled),
@@ -45,14 +74,81 @@
   transform: scale(0.92);
 }
 
-.iconButton[aria-current='page'] {
-  background: var(--control);
-  color: var(--accent);
-}
-
 .iconButton:disabled {
   color: var(--ink-faint);
   opacity: 0.55;
+  cursor: default;
+}
+
+/* History and Publish */
+
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--control);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 120ms ease;
+}
+
+.pill svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pill:hover:not(:disabled) {
+  border-color: #333333;
+  background: var(--control-hover);
+}
+
+.pill:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.pill[aria-current='page'] {
+  border-color: var(--neon);
+  color: var(--neon);
+}
+
+.pillNeon {
+  border-color: var(--neon);
+  background: var(--neon);
+  color: var(--on-neon);
+  font-weight: 600;
+}
+
+.pillNeon:hover:not(:disabled) {
+  border-color: var(--neon-strong);
+  background: var(--neon-strong);
+  box-shadow: 0 0 18px var(--neon-glow);
+}
+
+.pillNeon[aria-current='page'] {
+  color: var(--on-neon);
+  box-shadow: 0 0 0 3px var(--neon-glow);
+}
+
+.pill:disabled {
+  opacity: 0.5;
   cursor: default;
 }
 
@@ -66,7 +162,7 @@
   min-width: 0;
   height: 40px;
   padding: 0 14px;
-  border: 1px solid transparent;
+  border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--control);
   transition:
@@ -80,9 +176,11 @@
 }
 
 .addressBar:focus-within {
-  border-color: var(--accent);
+  border-color: var(--neon);
   background: var(--surface-raised);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  box-shadow:
+    0 0 0 3px var(--neon-glow),
+    0 0 24px -6px var(--neon-glow);
 }
 
 .addressIcon {
@@ -102,8 +200,10 @@
 }
 
 .dotLive {
-  background: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  background: var(--neon);
+  box-shadow:
+    0 0 0 3px var(--neon-glow),
+    0 0 10px var(--neon);
 }
 
 .dotDead {
@@ -261,7 +361,8 @@
   left: 0;
   width: 34%;
   border-radius: 2px;
-  background: var(--accent);
+  background: var(--neon);
+  box-shadow: 0 0 10px var(--neon);
   animation: travel 1.1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
@@ -299,7 +400,26 @@
     flex: 1;
   }
 
-  .byline {
+  .logo {
+    margin-right: 4px;
+  }
+
+  .byline,
+  .pillText,
+  .personName {
+    display: none;
+  }
+
+  .pill {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 721px) {
+  .wordmark,
+  .personName {
     display: none;
   }
 }

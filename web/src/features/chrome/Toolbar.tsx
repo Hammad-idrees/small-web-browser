@@ -58,7 +58,12 @@ export function Toolbar({
             onNavigate({ kind: 'home' });
           }}
         >
-          <LogoMark />
+          <span className={styles.logoMark}>
+            <LogoMark />
+          </span>
+          <span className={styles.wordmark} aria-hidden="true">
+            Small Web
+          </span>
         </button>
         <button
           type="button"
@@ -91,33 +96,37 @@ export function Toolbar({
         onEdit={onEdit}
       />
 
-      <button
-        type="button"
-        className={styles.iconButton}
-        aria-label="Publish"
-        title="Publish a page"
-        aria-current={location?.kind === 'publish' ? 'page' : undefined}
-        disabled={!ready}
-        onClick={() => {
-          onNavigate({ kind: 'publish' });
-        }}
-      >
-        <PublishIcon />
-      </button>
+      <div className={styles.actions}>
+        <button
+          type="button"
+          className={styles.pill}
+          aria-label="History"
+          title="History"
+          aria-current={location?.kind === 'history' ? 'page' : undefined}
+          disabled={!ready}
+          onClick={() => {
+            onNavigate({ kind: 'history' });
+          }}
+        >
+          <HistoryIcon />
+          <span className={styles.pillText}>History</span>
+        </button>
 
-      <button
-        type="button"
-        className={styles.iconButton}
-        aria-label="History"
-        title="History"
-        aria-current={location?.kind === 'history' ? 'page' : undefined}
-        disabled={!ready}
-        onClick={() => {
-          onNavigate({ kind: 'history' });
-        }}
-      >
-        <HistoryIcon />
-      </button>
+        <button
+          type="button"
+          className={`${styles.pill} ${styles.pillNeon}`}
+          aria-label="Publish"
+          title="Publish a page"
+          aria-current={location?.kind === 'publish' ? 'page' : undefined}
+          disabled={!ready}
+          onClick={() => {
+            onNavigate({ kind: 'publish' });
+          }}
+        >
+          <PublishIcon />
+          <span className={styles.pillText}>Publish</span>
+        </button>
+      </div>
 
       <PersonPicker
         people={people}
