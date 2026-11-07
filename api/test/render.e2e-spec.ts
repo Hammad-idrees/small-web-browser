@@ -148,6 +148,25 @@ describe('Resolving and rendering (e2e)', () => {
       expect(text).toContain('ordinary garden shed');
     });
 
+    it('makes room above the page when asked, for the floating navbar', async () => {
+      const id = await versionIdOf('tidepool.zz');
+      const { text } = await request(server())
+        .get(`/render/versions/${id}?top=96`)
+        .expect(200);
+      expect(text).toContain('<style>html{padding-top:96px}</style>');
+      expect(text.match(/<script/g)).toHaveLength(1);
+    });
+
+    it('accepts only a whole number of pixels within reason for that room', async () => {
+      const id = await versionIdOf('tidepool.zz');
+      for (const top of ['-1', '9999', '12.5', '96px', '1;color:red']) {
+        await request(server())
+          .get(`/render/versions/${id}`)
+          .query({ top })
+          .expect(400);
+      }
+    });
+
     it('rejects a malformed id', async () => {
       const response = await request(server())
         .get('/render/versions/not-an-id')

@@ -143,6 +143,7 @@ export function Viewport({
           onScroll={reportScroll}
           onOpen={openFromSearch}
           onSearch={search}
+          onHome={openHome}
         />
       );
     case 'history':

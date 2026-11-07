@@ -14,6 +14,21 @@ interface SiteFrameProps {
 }
 
 /**
+ * How tall the floating navbar's space is, in pixels, read from the same
+ * `--nav-space` the app's own pages use. 0 before there is a document to measure.
+ */
+function measureNavSpace(): number {
+  if (typeof document === 'undefined') return 0;
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:absolute;visibility:hidden;pointer-events:none;height:var(--nav-space)';
+  document.body.append(probe);
+  const height = probe.getBoundingClientRect().height;
+  probe.remove();
+  return height;
+}
+
+/**
  * Shows one contained page. The parent gives this a new `key` for every trail entry,
  * so each page gets a brand new iframe. Changing the `src` of an existing iframe
  * would add a hidden entry to the browser's history and break Back.
@@ -28,6 +43,8 @@ export function SiteFrame({
   const frame = useRef<HTMLIFrameElement>(null);
   // Only where the page was when it was opened. Later reports must not rescroll it.
   const [initialScroll] = useState(scrollY);
+  // Fixed for this frame's life: each entry gets a new frame anyway.
+  const [topInset] = useState(measureNavSpace);
   const [revealed, setRevealed] = useState(false);
 
   const onReady = useCallback(() => {
@@ -44,7 +61,7 @@ export function SiteFrame({
       ref={frame}
       // The third containment layer, alongside the header the document is served with.
       sandbox="allow-scripts"
-      src={versionUrl(versionId)}
+      src={versionUrl(versionId, topInset)}
       title={title}
       referrerPolicy="no-referrer"
       className={`${styles.frame} ${revealed ? styles.revealed : ''}`}

@@ -1,11 +1,20 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Query, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { objectIdSchema } from '@small-web/contracts';
 import type { Response } from 'express';
+import { z } from 'zod';
 import type { Env } from '../config/env.js';
 import { SitesService } from '../sites/sites.service.js';
 import { buildContentPolicy } from './content-policy.js';
-import { buildDocument } from './document-builder.js';
+import { buildDocument, MAX_TOP_INSET } from './document-builder.js';
+
+/** Whole pixels only; anything else is refused before a document is built. */
+const topInsetSchema = z.coerce
+  .number()
+  .int()
+  .min(0)
+  .max(MAX_TOP_INSET)
+  .default(0);
 
 @Controller('render')
 export class RenderController {
@@ -20,14 +29,18 @@ export class RenderController {
     );
   }
 
-  /** Serves one page version as a contained document, for the app's iframe. */
+  /**
+   * Serves one page version as a contained document, for the app's iframe.
+   * `top` asks for room above the page, so the viewer's navbar can float over it.
+   */
   @Get('versions/:id')
   async renderVersion(
     @Param('id', { schema: objectIdSchema }) id: string,
+    @Query('top', { schema: topInsetSchema }) top: number,
     @Res({ passthrough: true }) response: Response,
   ): Promise<string> {
     const version = await this.sites.getVersion(id);
-    const document = buildDocument(version);
+    const document = buildDocument(version, { topInset: top });
 
     response.set({
       'Content-Type': 'text/html; charset=utf-8',

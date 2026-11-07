@@ -1,0 +1,96 @@
+/* A slim white strip under the hero, its phrases sliding left without end. */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #ececec;
+  background: #ffffff;
+  color: #0a0a0a;
+
+  /* Fades in and out at the edges, so phrases arrive and leave softly. */
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Two identical runs side by side; moving by exactly one run's width loops seamlessly. */
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 40s linear infinite;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.run {
+  display: flex;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pair {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 0;
+  white-space: nowrap;
+}
+
+.strong {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.soft {
+  color: #8a8a8a;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #12b866;
+}
+
+.slashes {
+  margin: 0 30px 0 12px;
+  color: #12b866;
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .pair {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .strong,
+  .soft {
+    font-size: 15px;
+  }
+
+  .slashes {
+    margin: 0 20px 0 8px;
+  }
+}
+
+/* Still, when motion is unwelcome: the first phrases simply sit there. */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

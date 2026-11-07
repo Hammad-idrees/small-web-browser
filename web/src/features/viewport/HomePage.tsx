@@ -2,6 +2,7 @@ import type { Person } from '@small-web/contracts';
 import Image from 'next/image';
 import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/Button';
+import { HomeMarquee } from './HomeMarquee';
 import { HomeSections } from './HomeSections';
 import styles from './pages.module.css';
 
@@ -70,6 +71,7 @@ export function HomePage({ people, onOpen, onPublish }: HomePageProps) {
         </div>
       </section>
 
+      <HomeMarquee />
       <HomeSections onOpen={onOpen} onPublish={onPublish} />
     </div>
   );

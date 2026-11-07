@@ -1,18 +1,18 @@
+/*
+ * The theme: a black glass navbar with neon green for what is live, over pages
+ * that are pure white. One palette, the same in light and dark system settings.
+ */
 :root {
   color-scheme: light;
 
   --font-sans:
     var(--font-display-face, ui-sans-serif), system-ui, -apple-system,
     'Segoe UI', Roboto, sans-serif;
-  --font-serif:
-    'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, ui-serif, serif;
   --font-mono:
     ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, Menlo, monospace;
 
-  /* The browser's own frame is always black, with neon green for what is live. */
+  /* The browser's own frame: black, with neon green for what is live. */
   --chrome: #050505;
-  --chrome-raised: #111111;
-  --chrome-hover: #1a1a1a;
   --chrome-line: #1f1f1f;
   --chrome-ink: #f4f4f4;
   --chrome-ink-soft: #a1a1a1;
@@ -27,52 +27,14 @@
   --nav-height: 68px;
   --nav-space: calc(var(--nav-top) + var(--nav-height) + 14px);
 
-  --surface: #fbfaf6;
-  --surface-raised: #ffffff;
-  --surface-sunken: #efece4;
-  --control: #e1ddd2;
-  --control-hover: #d9d4c8;
-  --line: #d9d4c7;
-  --ink: #1d2422;
-  --ink-soft: #55605c;
-  --ink-faint: #7f8985;
-  /* A deeper green than the neon, so text in it stays readable on white. */
+  /* The pages: pure white, near-black ink, and a deeper green that reads on white. */
+  --surface: #ffffff;
+  --line: #e4e4e4;
+  --ink: #0a0a0a;
+  --ink-soft: #4d4d4d;
+  --ink-faint: #7a7a7a;
   --accent: #0a7f43;
-  --accent-strong: #076634;
-  --accent-glow: rgb(10 127 67 / 16%);
   --on-accent: #ffffff;
-  --shadow: rgb(38 44 40 / 40%);
-  --shadow-soft: rgb(38 44 40 / 8%);
-  --alert-surface: #fbeee7;
-  --alert-line: #e8c6b4;
-  --avatar-lightness: 82%;
-  --avatar-ink: 22%;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-
-    --surface: #0c0c0c;
-    --surface-raised: #141414;
-    --surface-sunken: #1b1b1b;
-    --control: #1b1b1b;
-    --control-hover: #242424;
-    --line: #262626;
-    --ink: #f2f2f2;
-    --ink-soft: #a6a6a6;
-    --ink-faint: #737373;
-    --accent: #3dfc8f;
-    --accent-strong: #6dffab;
-    --accent-glow: rgb(61 252 143 / 18%);
-    --on-accent: #04140b;
-    --shadow: rgb(0 0 0 / 70%);
-    --shadow-soft: rgb(0 0 0 / 30%);
-    --alert-surface: #33241d;
-    --alert-line: #5c3e2f;
-    --avatar-lightness: 30%;
-    --avatar-ink: 86%;
-  }
 }
 
 /* On a phone the navbar has two rows. */
@@ -98,7 +60,7 @@ body {
 
 body {
   overflow: hidden;
-  background: var(--chrome);
+  background: var(--surface);
   color: var(--ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;

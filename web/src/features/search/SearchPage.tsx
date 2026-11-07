@@ -7,6 +7,7 @@ import {
 } from '@small-web/contracts';
 import { type ReactNode, type SubmitEvent, useCallback } from 'react';
 import { Button } from '@/components/Button';
+import { PageBanner } from '@/components/PageBanner';
 import { searchSites } from '@/lib/api-client';
 import { useRestoringPager } from '../viewport/useRestoringPager';
 import styles from './SearchPage.module.css';
@@ -18,6 +19,7 @@ interface SearchPageProps {
   readonly onScroll: (y: number) => void;
   readonly onOpen: (address: string) => void;
   readonly onSearch: (query: string) => void;
+  readonly onHome: () => void;
 }
 
 /**
@@ -31,6 +33,7 @@ export function SearchPage({
   onScroll,
   onOpen,
   onSearch,
+  onHome,
 }: SearchPageProps) {
   const hasQuery = query.trim() !== '';
 
@@ -59,34 +62,38 @@ export function SearchPage({
 
   return (
     <div className={styles.pane} ref={pane} onScroll={handleScroll}>
+      <PageBanner
+        title="Search"
+        subtitle={hasQuery ? `“${query}”` : 'Every word on every page'}
+        crumb="Search"
+        onHome={onHome}
+      />
+
       <div className={styles.page}>
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>Search</p>
-          <h1 className={styles.title}>
-            {hasQuery ? (
-              <>
-                Pages that mention <span className={styles.query}>{query}</span>
-              </>
-            ) : (
-              'Search the small web'
-            )}
-          </h1>
-          <form className={styles.form} role="search" onSubmit={submit}>
-            <input
-              className={styles.input}
-              name="q"
-              defaultValue={query}
-              aria-label="Search for"
-              placeholder="Words you remember from a page"
-              maxLength={MAX_SEARCH_QUERY}
-              autoComplete="off"
-              enterKeyHint="search"
-            />
-            <Button type="submit" variant="solid" className={styles.submit}>
-              Search
-            </Button>
-          </form>
-        </header>
+        <form className={styles.form} role="search" onSubmit={submit}>
+          <span className={styles.formIcon} aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="m20 20-4-4" />
+            </svg>
+          </span>
+          <input
+            className={styles.input}
+            name="q"
+            defaultValue={query}
+            aria-label="Search for"
+            placeholder="Words you remember from a page"
+            maxLength={MAX_SEARCH_QUERY}
+            autoComplete="off"
+            enterKeyHint="search"
+          />
+          <Button type="submit" variant="solid" className={styles.submit}>
+            Search
+          </Button>
+        </form>
+        <p className={styles.hint}>
+          Search reads the words on every page, not just the titles.
+        </p>
 
         <ol className={styles.results}>
           {items.map((result) => (
@@ -98,13 +105,21 @@ export function SearchPage({
                   onOpen(result.address);
                 }}
               >
-                <span className={styles.meta}>
-                  <span className={styles.address}>{result.address}</span>
-                  <span className={styles.author}>by {result.authorName}</span>
+                <span className={styles.resultBody}>
+                  <span className={styles.meta}>
+                    <span className={styles.address}>{result.address}</span>
+                    <span className={styles.author}>by {result.authorName}</span>
+                  </span>
+                  <span className={styles.resultTitle}>{result.title}</span>
+                  <span className={styles.snippet}>
+                    {withHighlights(result.snippet, result.highlights)}
+                  </span>
                 </span>
-                <span className={styles.resultTitle}>{result.title}</span>
-                <span className={styles.snippet}>
-                  {withHighlights(result.snippet, result.highlights)}
+                <span className={styles.go} aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M7 17 17 7" />
+                    <path d="M8 7h9v9" />
+                  </svg>
                 </span>
               </button>
             </li>
@@ -114,12 +129,11 @@ export function SearchPage({
         <div ref={sentinel} />
 
         <footer className={styles.footer} aria-live="polite">
-          {!hasQuery ? (
-            <span>
-              Search looks through the words on every page, not just the titles.
+          {!hasQuery ? null : state === 'loading' ? (
+            <span className={styles.loading}>
+              <span className={styles.spinner} aria-hidden="true" />
+              Searching…
             </span>
-          ) : state === 'loading' ? (
-            <span>Searching…</span>
           ) : state === 'error' ? (
             <>
               <span>The search could not be finished.</span>
@@ -128,13 +142,14 @@ export function SearchPage({
               </Button>
             </>
           ) : complete && items.length === 0 ? (
-            <span>
+            <span className={styles.empty}>
               No page mentions that. Try fewer words, or another way of putting
               it.
             </span>
           ) : complete ? (
-            <span>
-              {items.length === 1 ? 'One page' : `${items.length} pages`} found.
+            <span className={styles.end}>
+              {items.length === 1 ? 'One page' : `${String(items.length)} pages`}{' '}
+              found
             </span>
           ) : null}
         </footer>

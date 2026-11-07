@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button';
 import styles from './pages.module.css';
+import { StatusLayout } from './StatusPages';
 
 interface NowherePageProps {
   readonly address: string;
@@ -8,6 +9,7 @@ interface NowherePageProps {
   readonly onHome: () => void;
 }
 
+/** An address with nothing at it. A real stop on the trail, so Back works from here. */
 export function NowherePage({
   address,
   canGoBack,
@@ -15,26 +17,11 @@ export function NowherePage({
   onHome,
 }: NowherePageProps) {
   return (
-    <div className={styles.page}>
-      <div className={styles.nowhere}>
-        <svg
-          className={styles.emptyRing}
-          viewBox="0 0 120 120"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <circle cx="60" cy="60" r="56" />
-          <circle cx="60" cy="60" r="34" />
-        </svg>
-
-        <h1 className={styles.nowhereTitle}>Nowhere</h1>
-        <p className={styles.nowhereAddress}>{address}</p>
-        <p className={styles.lede}>
-          Nothing lives at this address. It may have been lost, or it may never
-          have existed at all.
-        </p>
-
-        <div className={styles.actions}>
+    <StatusLayout
+      title="Nowhere"
+      subtitle="Nothing lives at this address"
+      actions={
+        <>
           {canGoBack ? (
             <Button variant="solid" onClick={onBack}>
               Go back
@@ -43,8 +30,13 @@ export function NowherePage({
           <Button variant="outline" onClick={onHome}>
             Start page
           </Button>
-        </div>
-      </div>
-    </div>
+        </>
+      }
+    >
+      <p className={styles.deadAddress}>{address}</p>
+      <p className={styles.lede}>
+        It may have been lost, or it may never have existed at all.
+      </p>
+    </StatusLayout>
   );
 }

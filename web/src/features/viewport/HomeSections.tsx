@@ -104,19 +104,11 @@ export function HomeSections({ onOpen, onPublish }: HomeSectionsProps) {
       </section>
 
       <section className={styles.section} aria-labelledby="how-it-works">
-        <header className={styles.header}>
-          <div>
-            <p className={styles.eyebrow}>How it works</p>
-            <h2 id="how-it-works" className={styles.heading}>
-              A browser for
-              <br />
-              a smaller web.
-            </h2>
-          </div>
-          <p className={styles.intro}>
-            No accounts, no feeds, no ads. Just pages at addresses, the links
-            between them, and a trail you can always walk back along.
-          </p>
+        <header className={styles.headerStacked}>
+          <p className={styles.eyebrow}>How it works</p>
+          <h2 id="how-it-works" className={styles.heading}>
+            A browser for a smaller web.
+          </h2>
         </header>
 
         <ol className={styles.steps}>

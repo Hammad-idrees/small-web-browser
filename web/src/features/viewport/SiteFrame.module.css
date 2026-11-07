@@ -1,14 +1,13 @@
 /*
- * A contained page cannot be padded from outside, so it starts below the floating
- * navbar, as a sheet with rounded top corners.
+ * The contained page fills the window, behind the floating navbar. The document
+ * itself leaves room at its top for the navbar (see versionUrl's topInset), so the
+ * site's own background runs right up under the glass, with no band or edge.
  */
 .frame {
   display: block;
   width: 100%;
-  height: calc(100% - var(--nav-space));
-  margin-top: var(--nav-space);
+  height: 100%;
   border: 0;
-  border-radius: 18px 18px 0 0;
   background: #fff;
   opacity: 0;
   transition: opacity 140ms ease-out;

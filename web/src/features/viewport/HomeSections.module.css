@@ -26,16 +26,6 @@
   padding-bottom: clamp(88px, 11vw, 136px);
 }
 
-/* Section header: title on the left, a short paragraph on the right. */
-
-.header {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: 32px 64px;
-  align-items: end;
-  margin-bottom: clamp(40px, 5vw, 64px);
-}
-
 /* A heading on its own, label above it. */
 .headerStacked {
   margin-bottom: clamp(40px, 5vw, 64px);
@@ -67,14 +57,6 @@
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 1;
-}
-
-.intro {
-  max-width: 34em;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 17px;
-  line-height: 1.65;
 }
 
 /* Cards */
@@ -335,11 +317,6 @@
 }
 
 @media (max-width: 860px) {
-  .header {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-  }
-
   .cards {
     grid-template-columns: minmax(0, 1fr);
   }

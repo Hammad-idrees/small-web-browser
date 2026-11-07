@@ -1,8 +1,12 @@
+/*
+ * White behind everything, like the pages. Only the navbar is dark; where a site's
+ * frame leaves a strip above it, that strip is white too.
+ */
 .app {
   position: relative;
   height: 100dvh;
   overflow: hidden;
-  background: var(--chrome);
+  background: var(--surface);
 }
 
 /* The page fills the window. The navbar floats over it. */
@@ -10,7 +14,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: var(--chrome);
+  background: var(--surface);
 }
 
 .failure {
@@ -25,13 +29,16 @@
   gap: 6px 14px;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 10px 16px;
-  border: 1px solid var(--alert-line);
+  padding: 14px 18px;
+
+  /* The same alert as the publish form: pale red, with a firm red edge. */
+  border: 1px solid #f0c4b8;
+  border-left: 4px solid #c2412d;
   border-radius: 14px;
-  background: var(--alert-surface);
-  box-shadow: 0 12px 30px -16px rgb(0 0 0 / 60%);
-  color: var(--ink);
-  font-size: 14px;
+  background: #fff8f6;
+  box-shadow: 0 16px 34px -18px rgb(0 0 0 / 35%);
+  color: #7a2817;
+  font-size: 15px;
 }
 
 .failure span {
@@ -58,11 +65,12 @@
 }
 
 .failureAction {
-  color: var(--accent);
+  color: #0a7f43;
+  font-weight: 600;
 }
 
 .failureDismiss {
-  color: var(--ink-soft);
+  color: #7a2817;
 }
 
 .failureAction:hover,

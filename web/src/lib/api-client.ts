@@ -140,6 +140,12 @@ export async function getPageSource(versionId: string): Promise<PageSource> {
 }
 
 /** Where a contained page is served from. */
-export function versionUrl(versionId: string): string {
-  return `${API_URL}/render/versions/${versionId}`;
+/**
+ * The contained document for one version. `topInset` asks for that much room above
+ * the page, in pixels, so the floating navbar can sit over the page's own background.
+ */
+export function versionUrl(versionId: string, topInset = 0): string {
+  const base = `${API_URL}/render/versions/${versionId}`;
+  const top = Math.round(topInset);
+  return top > 0 ? `${base}?top=${String(top)}` : base;
 }

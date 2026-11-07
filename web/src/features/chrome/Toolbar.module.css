@@ -9,7 +9,6 @@
   --surface-raised: rgb(8 8 8 / 70%);
   --surface: #0a0a0a;
   --accent: var(--neon);
-  --accent-glow: var(--neon-glow);
 
   /* Floats above the page, a gap below the top, and the page scrolls beneath it. */
   position: absolute;
@@ -243,8 +242,10 @@
   flex: none;
   max-width: 30%;
   overflow: hidden;
-  color: var(--ink-faint);
-  font-size: 12.5px;
+
+  /* Light enough to read on the glass over any page colour. */
+  color: var(--ink-soft);
+  font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

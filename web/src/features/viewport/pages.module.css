@@ -70,7 +70,7 @@
   left: -110px;
   width: clamp(180px, 19vw, 300px);
   opacity: 0.8;
-  animation: drift 11s ease-in-out infinite;
+  animation: drift 9s ease-in-out infinite;
 }
 
 .knotEcho {
@@ -79,28 +79,40 @@
   width: clamp(150px, 16vw, 250px);
   opacity: 0.75;
   filter: drop-shadow(0 0 36px rgb(61 252 143 / 18%)) blur(0.5px);
-  animation: drift-echo 13s ease-in-out infinite;
+  animation: drift-echo 10.5s ease-in-out infinite;
 }
 
+/*
+ * A slow wander in three stops instead of a straight bob: it rises, turns and
+ * swells a little, dips back the other way, then settles.
+ */
 @keyframes drift {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
   }
 
-  50% {
-    transform: translate3d(10px, -18px, 0) rotate(8deg);
+  35% {
+    transform: translate3d(22px, -34px, 0) rotate(16deg) scale(1.05);
+  }
+
+  70% {
+    transform: translate3d(-10px, -12px, 0) rotate(-8deg) scale(0.98);
   }
 }
 
 @keyframes drift-echo {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(150deg);
+    transform: translate3d(0, 0, 0) rotate(150deg) scale(1);
   }
 
-  50% {
-    transform: translate3d(-12px, 14px, 0) rotate(138deg);
+  40% {
+    transform: translate3d(-24px, 26px, 0) rotate(128deg) scale(1.06);
+  }
+
+  75% {
+    transform: translate3d(10px, 8px, 0) rotate(162deg) scale(0.97);
   }
 }
 
@@ -209,15 +221,6 @@
   line-height: 1.55;
 }
 
-/* Shared by the nowhere and status pages. */
-.lede {
-  max-width: 50ch;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 17px;
-  line-height: 1.6;
-}
-
 .heroActions {
   margin-top: 40px;
 }
@@ -227,48 +230,114 @@
   box-shadow: 0 14px 34px -14px rgb(10 127 67 / 55%);
 }
 
-/* Nowhere and status pages */
+/*
+ * Nowhere and offline: white, the start page's grid of squares, a slowly turning
+ * dashed ring, and a poster-sized title like the page banners. Always light.
+ */
+.status {
+  --ink: #0a0a0a;
+  --ink-soft: #4d4d4d;
+  --line: #e4e4e4;
+  --surface: #ffffff;
+  --accent: #0a7f43;
+  --on-accent: #ffffff;
 
-.nowhere {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
-  padding: 48px 24px;
+
+  /* Reaches up behind the navbar, like the hero, so the white runs to the top. */
+  min-height: calc(100% + var(--nav-space));
+  margin-top: calc(-1 * var(--nav-space));
+  padding: calc(var(--nav-space) + 40px) 24px 72px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #ffffff;
+  color: var(--ink);
+  color-scheme: light;
   text-align: center;
 }
 
-.emptyRing {
-  width: 96px;
-  height: 96px;
+.status::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(0 0 0 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 0 0 / 6%) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 15%, transparent 72%);
+}
+
+/* Rings with gaps in them: something that should be here, and is not. */
+.statusRing {
+  width: 112px;
+  height: 112px;
   margin-bottom: 28px;
   fill: none;
-  stroke: var(--ink-faint);
-  stroke-dasharray: 3 7;
+  stroke: #9a9a9a;
+  stroke-dasharray: 4 8;
   stroke-linecap: round;
-  stroke-width: 1;
+  stroke-width: 1.4;
+  animation: ring-turn 40s linear infinite;
 }
 
-.nowhereTitle {
-  margin: 0 0 10px;
-  font-family: var(--font-serif);
-  font-size: clamp(38px, 6vw, 56px);
+.statusDot {
+  fill: var(--accent);
+  stroke: none;
+}
+
+@keyframes ring-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.statusTitle {
+  margin: 0;
+  font-size: clamp(56px, 9vw, 112px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.statusSubtitle {
+  margin: 14px 0 26px;
+  color: #8a8a8a;
+  font-size: clamp(22px, 2.8vw, 34px);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
-.nowhereAddress {
+/* The address that led nowhere: in a dashed pill, struck through. */
+.deadAddress {
   max-width: 100%;
   margin: 0 0 18px;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: var(--surface-sunken);
+  padding: 8px 18px;
+  border: 1px dashed #b5b5b5;
+  border-radius: 999px;
+  background: #ffffff;
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
+  text-decoration: line-through;
+  text-decoration-color: #b0b0b0;
   overflow-wrap: anywhere;
+}
+
+/* The sentence under a status title, and under nowhere's address. */
+.lede {
+  max-width: 34em;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 .actions {
@@ -276,14 +345,10 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
-  margin-top: 28px;
+  margin-top: 32px;
 }
 
 @media (max-width: 640px) {
-  .places {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .hero {
     padding: calc(var(--nav-space) + 32px) 16px 72px;
   }
@@ -317,7 +382,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .glyph,
-  .knot {
+  .knot,
+  .statusRing {
     animation: none;
   }
 }
