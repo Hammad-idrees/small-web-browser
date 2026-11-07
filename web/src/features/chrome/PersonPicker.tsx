@@ -2,45 +2,15 @@
 
 import type { Person } from '@small-web/contracts';
 import {
-  type CSSProperties,
   type KeyboardEvent,
   useEffect,
   useId,
   useRef,
   useState,
 } from 'react';
+import { Avatar } from '@/components/Avatar';
 import { CheckIcon, ChevronIcon } from './icons';
 import styles from './PersonPicker.module.css';
-
-const AVATAR_HUES = [172, 24, 205, 340, 95, 262];
-
-/** The same name always gets the same colour. */
-function hueFor(name: string): number {
-  let total = 0;
-  for (const character of name) total += character.charCodeAt(0);
-  return AVATAR_HUES[total % AVATAR_HUES.length] ?? 172;
-}
-
-function initialsOf(name: string): string {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0))
-    .join('')
-    .toUpperCase();
-}
-
-function Avatar({ name, large }: { readonly name: string; readonly large?: boolean }) {
-  return (
-    <span
-      className={`${styles.avatar} ${large ? styles.avatarLarge : ''}`}
-      style={{ '--avatar-hue': hueFor(name) } as CSSProperties}
-      aria-hidden="true"
-    >
-      {initialsOf(name)}
-    </span>
-  );
-}
 
 interface PersonPickerProps {
   readonly people: readonly Person[];
@@ -153,7 +123,11 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
         }}
         onKeyDown={onTriggerKey}
       >
-        {person ? <Avatar name={person.name} /> : <span className={styles.avatar} />}
+        {person ? (
+          <Avatar name={person.name} size={26} />
+        ) : (
+          <span className={styles.avatarEmpty} />
+        )}
         <span className={styles.name}>{person?.name ?? ''}</span>
         <span className={styles.chevron} aria-hidden="true">
           <ChevronIcon />
@@ -191,7 +165,7 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
                     choose(index);
                   }}
                 >
-                  <Avatar name={candidate.name} large />
+                  <Avatar name={candidate.name} size={24} />
                   <span className={styles.optionName}>{candidate.name}</span>
                   {selected ? (
                     <span className={styles.check} aria-hidden="true">

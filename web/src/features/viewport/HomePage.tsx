@@ -1,17 +1,21 @@
+import type { Person } from '@small-web/contracts';
 import Image from 'next/image';
+import { Avatar } from '@/components/Avatar';
 import { Button } from '@/components/Button';
 import { HomeSections } from './HomeSections';
 import styles from './pages.module.css';
 
 const FIRST_STOP = 'tidepool.zz';
+const NAMED = 3;
+const SHOWN_AVATARS = 5;
 
 interface HomePageProps {
-  readonly personName: string | undefined;
+  readonly people: readonly Person[];
   readonly onOpen: (address: string) => void;
   readonly onPublish: () => void;
 }
 
-export function HomePage({ personName, onOpen, onPublish }: HomePageProps) {
+export function HomePage({ people, onOpen, onPublish }: HomePageProps) {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
@@ -37,10 +41,7 @@ export function HomePage({ personName, onOpen, onPublish }: HomePageProps) {
           sizes="(max-width: 720px) 130px, 250px"
         />
 
-        <p className={styles.chip}>
-          <span className={styles.chipDot} aria-hidden="true" />
-          {personName ? `Browsing as ${personName}` : 'Welcome'}
-        </p>
+        <WrittenBy people={people} />
 
         <h1 className={styles.headline}>
           <span className={styles.lineFaint}>A small web,</span>
@@ -70,6 +71,39 @@ export function HomePage({ personName, onOpen, onPublish }: HomePageProps) {
       </section>
 
       <HomeSections onOpen={onOpen} onPublish={onPublish} />
+    </div>
+  );
+}
+
+/**
+ * The proof above the headline: the real people who write this web, as a row of
+ * faces and a line naming a few of them.
+ */
+function WrittenBy({ people }: { readonly people: readonly Person[] }) {
+  if (people.length === 0) return <div className={styles.writtenBySpacer} />;
+
+  const firstNames = people.map((person) => person.name.trim().split(/\s+/)[0]);
+  const named = firstNames.slice(0, NAMED);
+  const others = people.length - named.length;
+
+  return (
+    <div className={styles.writtenBy}>
+      <span className={styles.faces} aria-hidden="true">
+        {people.slice(0, SHOWN_AVATARS).map((person) => (
+          <span key={person.id} className={styles.face}>
+            <Avatar name={person.name} size={32} tone="light" />
+          </span>
+        ))}
+      </span>
+      <p className={styles.writtenByText}>
+        Pages by{' '}
+        <span className={styles.writtenByNames}>{named.join(', ')}</span>
+        {others > 0 ? (
+          <>
+            {' '}and {others} {others === 1 ? 'other' : 'more'}
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }

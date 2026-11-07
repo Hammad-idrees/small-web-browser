@@ -129,7 +129,7 @@ export function Viewport({
     case 'home':
       return (
         <HomePage
-          personName={personName}
+          people={people}
           onOpen={openFromStartPage}
           onPublish={openPublish}
         />

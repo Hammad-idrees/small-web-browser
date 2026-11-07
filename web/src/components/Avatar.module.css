@@ -1,0 +1,22 @@
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--avatar-size, 28px);
+  height: var(--avatar-size, 28px);
+  border-radius: 50%;
+  background: hsl(var(--avatar-hue, 150) 45% 22%);
+  box-shadow: inset 0 0 0 1px hsl(var(--avatar-hue, 150) 60% 45% / 45%);
+  color: hsl(var(--avatar-hue, 150) 80% 78%);
+  font-size: calc(var(--avatar-size, 28px) * 0.37);
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* On white: a soft tint of the person's colour, with dark initials. */
+.light {
+  background: hsl(var(--avatar-hue, 150) 60% 91%);
+  box-shadow: inset 0 0 0 1px hsl(var(--avatar-hue, 150) 40% 78%);
+  color: hsl(var(--avatar-hue, 150) 55% 26%);
+}

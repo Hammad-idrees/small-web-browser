@@ -6,7 +6,7 @@
   color: var(--ink);
 }
 
-/* Start page: hero. Always black, like the toolbar above it. */
+/* Start page: hero. Pure white, with a faint square grid; always light, whatever the theme. */
 
 .hero {
   position: relative;
@@ -21,20 +21,22 @@
   padding: calc(var(--nav-space) + 40px) 24px 88px;
   overflow: hidden;
   isolation: isolate;
-  background: var(--chrome);
-  color: var(--chrome-ink);
+  border-bottom: 1px solid #ececec;
+  background: #ffffff;
+  color: #0a0a0a;
+  color-scheme: light;
   text-align: center;
 }
 
-/* A faint grid that fades out toward the edges, and a green glow beneath the headline. */
+/* A faint grid of squares that fades out toward the edges, and a green glow beneath. */
 .hero::before {
   content: '';
   position: absolute;
   z-index: -2;
   inset: 0;
   background-image:
-    linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px);
+    linear-gradient(rgb(0 0 0 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(0 0 0 / 6%) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
 }
@@ -47,7 +49,7 @@
   width: min(900px, 120%);
   aspect-ratio: 2 / 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(61 252 143 / 16%), transparent);
+  background: radial-gradient(closest-side, rgb(61 252 143 / 14%), transparent);
   transform: translateX(-50%);
   pointer-events: none;
 }
@@ -102,26 +104,49 @@
   }
 }
 
-.chip {
-  display: inline-flex;
+/*
+ * Above the headline: the real writers, as overlapping faces and one quiet line.
+ * No border or badge; the faces carry it.
+ */
+.writtenBy {
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
   margin: 0 0 28px;
-  padding: 6px 14px 6px 12px;
-  border: 1px solid var(--chrome-line);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 3%);
-  color: var(--chrome-ink-soft);
-  font-size: 13px;
-  font-weight: 500;
 }
 
-.chipDot {
-  width: 7px;
-  height: 7px;
+.writtenBySpacer {
+  height: 34px;
+  margin: 0 0 28px;
+}
+
+.faces {
+  display: flex;
+}
+
+/* Each face sits in a ring of the hero's white, so the overlaps stay crisp. */
+.face {
+  display: grid;
+  padding: 2px;
   border-radius: 50%;
-  background: var(--neon);
-  box-shadow: 0 0 8px var(--neon);
+  background: #ffffff;
+}
+
+/* A small overlap, so two-letter initials are never covered by the next face. */
+.face + .face {
+  margin-left: -6px;
+}
+
+.writtenByText {
+  margin: 0;
+  color: #6b6b6b;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+}
+
+.writtenByNames {
+  color: #0a0a0a;
+  font-weight: 600;
 }
 
 .headline {
@@ -142,19 +167,20 @@
   -webkit-background-clip: text;
 }
 
+/* On white the fade runs light to dark: soft grey lines, then the last in near-black. */
 .lineFaint {
-  background-image: linear-gradient(180deg, #4a4a4a, #6e6e6e);
+  background-image: linear-gradient(180deg, #cfcfcf, #b0b0b0);
 }
 
 .lineMid {
-  background-image: linear-gradient(180deg, #6e6e6e, #9a9a9a);
+  background-image: linear-gradient(180deg, #a6a6a6, #7a7a7a);
 }
 
 .lineBright {
   display: inline-flex;
   align-items: center;
   gap: 0.2em;
-  color: var(--chrome-ink);
+  color: #0a0a0a;
 }
 
 .glyph {
@@ -162,21 +188,23 @@
   width: 0.68em;
   height: 0.68em;
   margin-top: 0.16em;
-  color: var(--neon);
-  filter: drop-shadow(0 0 14px rgb(61 252 143 / 55%));
+
+  /* Neon is too pale to read on white, so the rings are the deeper green, softly lit. */
+  color: #0a9a50;
+  filter: drop-shadow(0 0 10px rgb(61 252 143 / 45%));
   animation: breathe 4s ease-in-out infinite;
 }
 
 @keyframes breathe {
   50% {
-    filter: drop-shadow(0 0 22px rgb(61 252 143 / 80%));
+    filter: drop-shadow(0 0 18px rgb(61 252 143 / 70%));
   }
 }
 
 .heroLede {
   max-width: 34em;
   margin: 0;
-  color: #8a8a8a;
+  color: #5c5c5c;
   font-size: clamp(16px, 1.6vw, 19px);
   line-height: 1.55;
 }
@@ -196,7 +224,7 @@
 
 /* The shared Button, with a glow so it reads as the way in. */
 .heroActions .cta {
-  box-shadow: 0 0 36px -8px rgb(61 252 143 / 70%);
+  box-shadow: 0 14px 34px -14px rgb(10 127 67 / 55%);
 }
 
 /* Nowhere and status pages */
@@ -263,6 +291,12 @@
   .lineBright {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  /* Faces above the line on a phone, so the sentence never breaks oddly. */
+  .writtenBy {
+    flex-direction: column;
+    gap: 10px;
   }
 
   /* On a phone they sit further out and fainter, so the words stay clear. */
