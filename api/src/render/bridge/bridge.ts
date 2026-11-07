@@ -26,6 +26,10 @@ export const BRIDGE_SCRIPT = `(function () {
     return element ? element.closest('a[href]') : null;
   }
 
+  function reportScroll() {
+    send({ type: 'scroll', y: Math.max(0, Math.round(window.scrollY)) });
+  }
+
   function scrollToFragment(href) {
     var id = href.slice(1);
     try {
@@ -42,7 +46,15 @@ export const BRIDGE_SCRIPT = `(function () {
     event.preventDefault();
     var href = link.getAttribute('href') || '';
     if (href.charAt(0) === '#') scrollToFragment(href);
-    else send({ type: 'navigate', href: href });
+    else {
+      // A scroll report still waiting would otherwise be lost with this frame.
+      if (scrollTimer !== null) {
+        clearTimeout(scrollTimer);
+        scrollTimer = null;
+        reportScroll();
+      }
+      send({ type: 'navigate', href: href });
+    }
   }, true);
 
   document.addEventListener('auxclick', function (event) {
@@ -53,7 +65,7 @@ export const BRIDGE_SCRIPT = `(function () {
     if (scrollTimer !== null) return;
     scrollTimer = setTimeout(function () {
       scrollTimer = null;
-      send({ type: 'scroll', y: Math.max(0, Math.round(window.scrollY)) });
+      reportScroll();
     }, SCROLL_REPORT_MS);
   }, { passive: true });
 

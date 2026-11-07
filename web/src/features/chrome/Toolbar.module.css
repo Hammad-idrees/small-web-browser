@@ -1,0 +1,281 @@
+.toolbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+}
+
+.navGroup {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+}
+
+.logo,
+.iconButton {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.logo {
+  margin-right: 6px;
+  color: var(--accent);
+}
+
+.logo:hover:not(:disabled),
+.iconButton:hover:not(:disabled) {
+  background: var(--control-hover);
+}
+
+.iconButton:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.iconButton:disabled {
+  color: var(--ink-faint);
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Address bar */
+
+.addressBar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--control);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.addressBar:hover {
+  background: var(--control-hover);
+}
+
+.addressBar:focus-within {
+  border-color: var(--accent);
+  background: var(--surface-raised);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.addressIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--ink-faint);
+}
+
+.dotLive,
+.dotDead {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.dotLive {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.dotDead {
+  border: 1.5px dashed var(--ink-faint);
+}
+
+.addressInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.addressInput::placeholder {
+  color: var(--ink-faint);
+  font-family: var(--font-sans);
+}
+
+.byline {
+  flex: none;
+  max-width: 30%;
+  overflow: hidden;
+  color: var(--ink-faint);
+  font-size: 12.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.addressBar:focus-within .byline {
+  display: none;
+}
+
+/* Person picker */
+
+.person {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 8px 0 6px;
+  border-radius: 12px;
+  transition: background-color 120ms ease;
+}
+
+.person:hover {
+  background: var(--control-hover);
+}
+
+.person:focus-within {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: hsl(var(--avatar-hue, 172) 42% var(--avatar-lightness));
+  color: hsl(var(--avatar-hue, 172) 55% var(--avatar-ink));
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.personName {
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.personChevron {
+  display: grid;
+  place-items: center;
+  width: 14px;
+  color: var(--ink-faint);
+}
+
+.personChevron svg {
+  width: 14px;
+  height: 14px;
+}
+
+.personSelect {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.personSelect:disabled {
+  cursor: default;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Progress */
+
+.progress {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.progressActive {
+  opacity: 1;
+}
+
+.progressActive::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 34%;
+  border-radius: 2px;
+  background: var(--accent);
+  animation: travel 1.1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes travel {
+  from {
+    transform: translateX(-110%);
+  }
+
+  to {
+    transform: translateX(310%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressActive::after {
+    width: 100%;
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 720px) {
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    padding: 8px 10px;
+  }
+
+  .addressBar {
+    flex-basis: 100%;
+    order: 3;
+  }
+
+  .navGroup {
+    flex: 1;
+  }
+
+  .byline {
+    display: none;
+  }
+}

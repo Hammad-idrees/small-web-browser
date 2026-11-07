@@ -1,5 +1,29 @@
 import { describe, expect, it } from 'vitest';
-import { decodeRoute, encodeRoute, type Route } from './route-codec';
+import {
+  decodeRoute,
+  encodeRoute,
+  type Route,
+  routeFromInput,
+} from './route-codec';
+
+describe('routeFromInput', () => {
+  it.each<[string, Route]>([
+    ['tidepool.zz', { kind: 'address', address: 'tidepool.zz' }],
+    ['  TIDEPOOL.zz ', { kind: 'address', address: 'tidepool.zz' }],
+    ['http://tidepool.zz/', { kind: 'address', address: 'tidepool.zz' }],
+    ['never-existed.zz', { kind: 'address', address: 'never-existed.zz' }],
+    ['tidepool.zz/about', { kind: 'address', address: 'tidepool.zz/about' }],
+    ['lighthouse', { kind: 'search', query: 'lighthouse' }],
+    ['tide pools', { kind: 'search', query: 'tide pools' }],
+    ['what is tidepool.zz', { kind: 'search', query: 'what is tidepool.zz' }],
+  ])('%j leads to %j', (input, route) => {
+    expect(routeFromInput(input)).toEqual(route);
+  });
+
+  it.each(['', '   '])('%j leads nowhere at all', (input) => {
+    expect(routeFromInput(input)).toBeNull();
+  });
+});
 
 /** Reads a URL string the way the browser would split it. */
 function decodeUrl(url: string): Route | null {

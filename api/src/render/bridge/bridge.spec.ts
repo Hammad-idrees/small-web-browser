@@ -98,6 +98,20 @@ describe('bridge script', () => {
     ).toEqual([{ source: BRIDGE_SOURCE, type: 'scroll', y: 240 }]);
   });
 
+  it('sends a waiting scroll position before following a link', () => {
+    const { window, sent } = loadPage('<a id="go" href="a.zz">x</a>');
+    Object.defineProperty(window, 'scrollY', { value: 300 });
+    sent.length = 0;
+
+    window.dispatchEvent(new window.Event('scroll'));
+    click(window, '#go');
+
+    expect(sent).toEqual([
+      { source: BRIDGE_SOURCE, type: 'scroll', y: 300 },
+      { source: BRIDGE_SOURCE, type: 'navigate', href: 'a.zz' },
+    ]);
+  });
+
   it('announces itself once the page has loaded', () => {
     const { window, sent } = loadPage('<p>x</p>');
     window.dispatchEvent(new window.Event('load'));

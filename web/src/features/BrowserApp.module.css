@@ -1,0 +1,76 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: var(--chrome);
+}
+
+.viewport {
+  flex: 1;
+  min-height: 0;
+  margin: 0 8px 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow:
+    0 1px 2px var(--shadow-soft),
+    0 14px 36px -24px var(--shadow);
+}
+
+.failure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 0 8px 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--alert-line);
+  border-radius: 12px;
+  background: var(--alert-surface);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.failure span {
+  flex: 1;
+  min-width: 200px;
+}
+
+.failure strong {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.failureAction,
+.failureDismiss {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.failureAction {
+  color: var(--accent);
+}
+
+.failureDismiss {
+  color: var(--ink-soft);
+}
+
+.failureAction:hover,
+.failureDismiss:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .viewport {
+    margin: 0 4px 4px;
+    border-radius: 12px;
+  }
+}

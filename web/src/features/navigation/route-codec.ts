@@ -57,6 +57,24 @@ export function decodeRoute(pathname: string, search = ''): Route | null {
   return { kind: 'address', address: normalizeAddress(raw) ?? raw };
 }
 
+/**
+ * Where text typed into the address bar leads, or null if nothing was typed.
+ * As in a real browser, something that looks like an address is treated as one even
+ * if it turns out to lead nowhere, and anything else is a search.
+ */
+export function routeFromInput(input: string): Route | null {
+  const text = input.trim();
+  if (text === '') return null;
+
+  const address = normalizeAddress(text);
+  if (address !== null) return { kind: 'address', address };
+
+  const looksLikeAddress = !/\s/.test(text) && text.includes('.');
+  return looksLikeAddress
+    ? { kind: 'address', address: text }
+    : { kind: 'search', query: text };
+}
+
 function decodeSegment(segment: string): string | null {
   try {
     return decodeURIComponent(segment);

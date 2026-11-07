@@ -1,9 +1,14 @@
 import type { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { apiErrorSchema, siteSummarySchema } from '@small-web/contracts';
+import {
+  apiErrorSchema,
+  personSchema,
+  siteSummarySchema,
+} from '@small-web/contracts';
 import type { Model } from 'mongoose';
 import request from 'supertest';
+import { z } from 'zod';
 import { AppModule } from '../src/app.module.js';
 import { configureApp } from '../src/app.setup.js';
 import { SeedModule } from '../src/seed/seed.module.js';
@@ -36,6 +41,16 @@ describe('Resolving and rendering (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  describe('GET /api/people', () => {
+    it('lists everyone by name, in a stable order', async () => {
+      const response = await request(server()).get('/api/people').expect(200);
+      const people = z.array(personSchema).parse(response.body);
+      const names = people.map((person) => person.name);
+      expect(names).toContain('Noor Haddad');
+      expect(names).toEqual([...names].sort());
+    });
   });
 
   describe('GET /api/sites/:address', () => {
