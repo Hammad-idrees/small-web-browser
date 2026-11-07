@@ -45,6 +45,11 @@
   transform: scale(0.92);
 }
 
+.iconButton[aria-current='page'] {
+  background: var(--control);
+  color: var(--accent);
+}
+
 .iconButton:disabled {
   color: var(--ink-faint);
   opacity: 0.55;

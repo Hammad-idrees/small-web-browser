@@ -1,7 +1,8 @@
 'use client';
 
-import { normalizeAddress } from '@small-web/contracts';
+import { normalizeAddress, type VisitVia } from '@small-web/contracts';
 import { useCallback } from 'react';
+import { HistoryPage } from '../history/HistoryPage';
 import type { Navigator } from '../navigation/navigator';
 import type { TrailEntry } from '../navigation/trail';
 import { HomePage } from './HomePage';
@@ -12,6 +13,7 @@ import { NotBuiltPage } from './StatusPages';
 interface ViewportProps {
   readonly entry: TrailEntry;
   readonly navigator: Navigator;
+  readonly personId: string;
   readonly personName: string | undefined;
   readonly canGoBack: boolean;
 }
@@ -20,14 +22,15 @@ interface ViewportProps {
 export function Viewport({
   entry,
   navigator,
+  personId,
   personName,
   canGoBack,
 }: ViewportProps) {
   const entryId = entry.id;
 
-  const openAddress = useCallback(
-    (address: string) => {
-      navigator.navigate({ kind: 'address', address });
+  const open = useCallback(
+    (address: string, via: VisitVia) => {
+      navigator.navigate({ kind: 'address', address }, via);
     },
     [navigator],
   );
@@ -36,9 +39,23 @@ export function Viewport({
   const followLink = useCallback(
     (href: string) => {
       const address = normalizeAddress(href) ?? href.trim();
-      if (address !== '') openAddress(address);
+      if (address !== '') open(address, 'link');
     },
-    [openAddress],
+    [open],
+  );
+
+  const openFromStartPage = useCallback(
+    (address: string) => {
+      open(address, 'link');
+    },
+    [open],
+  );
+
+  const openFromHistory = useCallback(
+    (address: string) => {
+      open(address, 'history');
+    },
+    [open],
   );
 
   const reportScroll = useCallback(
@@ -74,11 +91,20 @@ export function Viewport({
         />
       );
     case 'home':
-      return <HomePage personName={personName} onOpen={openAddress} />;
+      return <HomePage personName={personName} onOpen={openFromStartPage} />;
     case 'search':
       return <NotBuiltPage name="Search" />;
     case 'history':
-      return <NotBuiltPage name="History" />;
+      return (
+        <HistoryPage
+          key={entry.id}
+          personId={personId}
+          personName={personName}
+          scrollY={entry.scrollY}
+          onScroll={reportScroll}
+          onOpen={openFromHistory}
+        />
+      );
     case 'publish':
       return <NotBuiltPage name="Publish" />;
   }

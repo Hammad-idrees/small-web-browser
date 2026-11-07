@@ -4,7 +4,7 @@ import type { Person } from '@small-web/contracts';
 import type { Route } from '../navigation/route-codec';
 import type { TrailLocation } from '../navigation/trail';
 import { AddressBar } from './AddressBar';
-import { BackIcon, ForwardIcon, LogoMark } from './icons';
+import { BackIcon, ForwardIcon, HistoryIcon, LogoMark } from './icons';
 import { PersonPicker } from './PersonPicker';
 import styles from './Toolbar.module.css';
 
@@ -81,6 +81,20 @@ export function Toolbar({
         disabled={!ready}
         onSubmit={onNavigate}
       />
+
+      <button
+        type="button"
+        className={styles.iconButton}
+        aria-label="History"
+        title="History"
+        aria-current={location?.kind === 'history' ? 'page' : undefined}
+        disabled={!ready}
+        onClick={() => {
+          onNavigate({ kind: 'history' });
+        }}
+      >
+        <HistoryIcon />
+      </button>
 
       <PersonPicker
         people={people}

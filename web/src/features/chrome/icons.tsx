@@ -40,6 +40,14 @@ export const SearchIcon = () => (
   </Icon>
 );
 
+export const HistoryIcon = () => (
+  <Icon>
+    <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" />
+    <path d="M3.5 4.5V9h4.5" />
+    <path d="M12 7.5V12l3 2" />
+  </Icon>
+);
+
 export const ChevronIcon = () => (
   <Icon>
     <path d="m7 10 5 5 5-5" />

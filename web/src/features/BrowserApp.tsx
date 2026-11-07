@@ -93,6 +93,7 @@ export function BrowserApp() {
           <Viewport
             entry={entry}
             navigator={navigator}
+            personId={entry.ownerId}
             personName={person?.name}
             canGoBack={entryBehind(trail) !== null}
           />

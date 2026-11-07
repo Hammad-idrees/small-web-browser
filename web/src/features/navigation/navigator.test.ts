@@ -1,4 +1,4 @@
-import type { Person, SiteSummary } from '@small-web/contracts';
+import type { Person, RecordVisit, SiteSummary } from '@small-web/contracts';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Navigator, type NavigatorEnvironment } from './navigator';
 import type { Route } from './route-codec';
@@ -87,6 +87,8 @@ function setup(
   const requests: Deferred[] = [];
   let peopleFails = false;
   let addressFails = false;
+  let recordFails = false;
+  const recorded: (RecordVisit & { entryId: string })[] = [];
   let id = 0;
 
   const environment: NavigatorEnvironment = {
@@ -113,6 +115,11 @@ function setup(
           REAL_SITES.includes(address) ? site(address) : null,
         );
       },
+      recordVisit: (entryId, visit) => {
+        if (recordFails) return Promise.reject(new Error('down'));
+        recorded.push({ entryId, ...visit });
+        return Promise.resolve();
+      },
     },
     createId: () => `id-${(id += 1)}`,
   };
@@ -123,7 +130,11 @@ function setup(
     history,
     stored,
     requests,
+    recorded,
     snapshot: () => navigator.getSnapshot(),
+    failRecording: (value: boolean) => {
+      recordFails = value;
+    },
     failPeople: (value: boolean) => {
       peopleFails = value;
     },
@@ -486,6 +497,129 @@ describe('Navigator', () => {
       await visit(world.navigator, 'b.zz');
 
       world.navigator.goBack();
+      expect(world.snapshot().failure).toBeNull();
+    });
+  });
+
+  describe('recording visits', () => {
+    const ways = () => world.recorded.map((v) => [v.via, v.address]);
+
+    it('records each arrival at an address, once, with how it happened', async () => {
+      world.navigator.navigate(to('a.zz'), 'typed');
+      await settle();
+      world.navigator.navigate(to('b.zz'), 'link');
+      await settle();
+      world.navigator.navigate(to('c.zz'), 'history');
+      await settle();
+
+      expect(ways()).toEqual([
+        ['typed', 'a.zz'],
+        ['link', 'b.zz'],
+        ['history', 'c.zz'],
+      ]);
+    });
+
+    it('names the visit after the trail entry, so a repeat is the same visit', async () => {
+      await visit(world.navigator, 'a.zz');
+      expect(world.recorded[0]?.entryId).toBe(
+        currentEntry(world.snapshot().trail)?.id,
+      );
+    });
+
+    it('records who was browsing and the exact version shown', async () => {
+      await visit(world.navigator, 'a.zz');
+      expect(world.recorded[0]).toMatchObject({
+        personId: NOOR.id,
+        versionId: 'a.zz-v1',
+      });
+    });
+
+    it('records an address that led nowhere, with no version', async () => {
+      await visit(world.navigator, 'dead.zz');
+      expect(world.recorded[0]).toMatchObject({
+        address: 'dead.zz',
+        versionId: null,
+      });
+    });
+
+    it('records nothing for moving back and forward', async () => {
+      await visit(world.navigator, 'a.zz', 'b.zz', 'c.zz');
+      const before = world.recorded.length;
+
+      world.navigator.goBack();
+      world.history.move(-1);
+      world.navigator.goForward();
+      world.history.move(1);
+      await settle();
+
+      expect(world.recorded).toHaveLength(before);
+    });
+
+    it('records nothing for a refresh', async () => {
+      await visit(world.navigator, 'a.zz', 'b.zz');
+      const before = world.recorded.length;
+
+      const refreshed = setup({ history: world.history, stored: world.stored });
+      refreshed.navigator.connect();
+      await settle();
+
+      expect(refreshed.recorded).toHaveLength(0);
+      expect(world.recorded).toHaveLength(before);
+    });
+
+    it('records arriving at a URL directly', async () => {
+      const opened = setup({ history: new FakeHistory('/site/b.zz') });
+      opened.navigator.connect();
+      await settle();
+      expect(opened.recorded.map((v) => v.via)).toEqual(['direct']);
+    });
+
+    it('does not record the app’s own pages', async () => {
+      world.navigator.navigate({ kind: 'history' });
+      await settle();
+      world.navigator.navigate({ kind: 'search', query: 'tide' });
+      await settle();
+      world.navigator.switchPerson(MARA.id);
+      await settle();
+      expect(world.recorded).toHaveLength(0);
+    });
+
+    it('records going again to the page you are on, as a new arrival', async () => {
+      await visit(world.navigator, 'a.zz', 'a.zz');
+      expect(world.recorded).toHaveLength(2);
+      expect(world.snapshot().trail.entries).toHaveLength(2);
+    });
+
+    it('records nothing for a navigation that failed or was overtaken', async () => {
+      world.failAddresses(true);
+      await visit(world.navigator, 'a.zz');
+      expect(world.recorded).toHaveLength(0);
+
+      const slow = setup({ manual: true });
+      slow.navigator.connect();
+      await settle();
+      slow.navigator.navigate(to('slow.zz'));
+      slow.navigator.navigate(to('fast.zz'));
+      slow.requests[1]?.resolve(site('fast.zz'));
+      slow.requests[0]?.resolve(site('slow.zz'));
+      await settle();
+      expect(slow.recorded.map((v) => v.address)).toEqual(['fast.zz']);
+    });
+
+    it('records how a retried navigation was first asked for', async () => {
+      world.failAddresses(true);
+      world.navigator.navigate(to('a.zz'), 'link');
+      await settle();
+      world.failAddresses(false);
+      world.navigator.retry();
+      await settle();
+      expect(ways()).toEqual([['link', 'a.zz']]);
+    });
+
+    it('carries on browsing when the history cannot be written', async () => {
+      world.failRecording(true);
+      await visit(world.navigator, 'a.zz', 'b.zz');
+      expect(here(world.snapshot().trail)).toBe('b.zz');
       expect(world.snapshot().failure).toBeNull();
     });
   });

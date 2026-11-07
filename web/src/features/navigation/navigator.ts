@@ -1,4 +1,9 @@
-import type { Person, SiteSummary } from '@small-web/contracts';
+import type {
+  Person,
+  RecordVisit,
+  SiteSummary,
+  VisitVia,
+} from '@small-web/contracts';
 import { decodeRoute, encodeRoute, type Route } from './route-codec';
 import {
   commitMode,
@@ -36,6 +41,8 @@ export interface NavigatorEnvironment {
       address: string,
       signal: AbortSignal,
     ): Promise<SiteSummary | null>;
+    /** Safe to repeat for the same entry. A failure must never affect navigation. */
+    recordVisit(entryId: string, visit: RecordVisit): Promise<void>;
   };
   createId(): string;
 }
@@ -46,6 +53,7 @@ interface FailedNavigation {
   readonly route: Route;
   readonly ownerId: string;
   readonly historyMode: HistoryMode;
+  readonly via: VisitVia;
 }
 
 export interface NavigatorSnapshot {
@@ -103,9 +111,10 @@ export class Navigator {
     void this.boot();
   };
 
-  readonly navigate = (route: Route): void => {
+  /** Goes somewhere new. `via` says how the person asked, for the history. */
+  readonly navigate = (route: Route, via: VisitVia = 'typed'): void => {
     const ownerId = this.snapshot.personId;
-    if (ownerId !== null) void this.go(route, ownerId, 'auto');
+    if (ownerId !== null) void this.go(route, ownerId, 'auto', via);
   };
 
   readonly goBack = (): void => {
@@ -123,7 +132,7 @@ export class Navigator {
   /** Starts a new trail for someone else. Their history is their own. */
   readonly switchPerson = (personId: string): void => {
     if (personId === this.snapshot.personId) return;
-    void this.go({ kind: 'home' }, personId, 'auto');
+    void this.go({ kind: 'home' }, personId, 'auto', 'typed');
   };
 
   readonly reportScroll = (entryId: string, y: number): void => {
@@ -133,7 +142,12 @@ export class Navigator {
   readonly retry = (): void => {
     const { failure } = this.snapshot;
     if (failure)
-      void this.go(failure.route, failure.ownerId, failure.historyMode);
+      void this.go(
+        failure.route,
+        failure.ownerId,
+        failure.historyMode,
+        failure.via,
+      );
   };
 
   readonly dismissFailure = (): void => {
@@ -172,7 +186,7 @@ export class Navigator {
 
     // Otherwise this tab just arrived at a URL, and the browser already has its entry.
     const ownerId = currentEntry(trail)?.ownerId ?? first.id;
-    await this.go(this.routeFromUrl(), ownerId, 'replace');
+    await this.go(this.routeFromUrl(), ownerId, 'replace', 'direct');
   }
 
   private readonly handleBrowserMove = (entryId: string | null): void => {
@@ -190,7 +204,9 @@ export class Navigator {
 
     // An entry the trail has dropped, or never knew: treat it as arriving at its URL.
     const ownerId = this.snapshot.personId;
-    if (ownerId !== null) void this.go(this.routeFromUrl(), ownerId, 'replace');
+    if (ownerId !== null) {
+      void this.go(this.routeFromUrl(), ownerId, 'replace', 'direct');
+    }
   };
 
   private routeFromUrl(): Route {
@@ -202,6 +218,7 @@ export class Navigator {
     route: Route,
     ownerId: string,
     historyMode: HistoryMode,
+    via: VisitVia,
   ): Promise<void> {
     this.inflight?.abort();
     const controller = new AbortController();
@@ -217,7 +234,7 @@ export class Navigator {
     } catch {
       if (this.snapshot.trail.pending?.requestId !== requestId) return;
       this.dispatch({ type: 'fail', requestId });
-      this.update({ failure: { route, ownerId, historyMode } });
+      this.update({ failure: { route, ownerId, historyMode, via } });
       return;
     }
 
@@ -234,6 +251,34 @@ export class Navigator {
     } else {
       this.environment.history.push(entry.id, url);
     }
+
+    this.recordVisit(entry.id, ownerId, location, via);
+  }
+
+  /**
+   * An arrival at an address is written to the person's history once it is shown.
+   * The app's own pages are not visits, and moving along the trail is not an arrival,
+   * which is why this is only called from here and never from a traverse.
+   */
+  private recordVisit(
+    entryId: string,
+    personId: string,
+    location: TrailLocation,
+    via: VisitVia,
+  ): void {
+    if (location.kind !== 'site' && location.kind !== 'nowhere') return;
+
+    const versionId = location.kind === 'site' ? location.versionId : null;
+    this.environment.api
+      .recordVisit(entryId, {
+        personId,
+        address: location.address,
+        versionId,
+        via,
+      })
+      .catch(() => {
+        // History is best effort. Browsing must carry on whatever happens to it.
+      });
   }
 
   private async locate(
