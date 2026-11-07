@@ -59,8 +59,8 @@ describe('Publishing (e2e)', () => {
       if (!person) throw new Error(`No ${name}`);
       return person;
     };
-    noor = named('Noor Haddad');
-    mara = named('Mara Quill');
+    noor = named('David Miller');
+    mara = named('Sarah Jones');
   });
 
   afterAll(async () => {
@@ -85,7 +85,7 @@ describe('Publishing (e2e)', () => {
       );
       expect(resolved).toMatchObject({
         title: 'Driftwood',
-        authorName: 'Noor Haddad',
+        authorName: 'David Miller',
         versionId: result.versionId,
       });
       expect(await render(result.versionId)).toContain('strandline');

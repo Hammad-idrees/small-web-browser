@@ -78,7 +78,7 @@ describe('Search (e2e)', () => {
     expect(result).toMatchObject({
       address: 'saltmarsh.zz',
       title: 'Walking the Salt Marsh',
-      authorName: 'Mara Quill',
+      authorName: 'Sarah Jones',
     });
     const marked = result?.highlights.map(({ start, length }) =>
       result.snippet.slice(start, start + length).toLowerCase(),

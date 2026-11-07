@@ -22,7 +22,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'tidepool.zz',
     title: 'The Tide Pool Journal',
-    author: 'Mara Quill',
+    author: 'Sarah Jones',
     html: `<style>
   body { background: #eef6f4; color: #17343a; font-family: Georgia, serif; max-width: 38em; margin: 2em auto; padding: 0 1em; line-height: 1.7; }
   h1 { color: #0f5c63; }
@@ -43,7 +43,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'harbourlight.zz',
     title: "The Lighthouse Keeper's Log",
-    author: 'Mara Quill',
+    author: 'Sarah Jones',
     html: `<style>
   body { background: #fbf7ec; color: #2b2a25; font-family: 'Courier New', monospace; max-width: 40em; margin: 2em auto; padding: 0 1em; line-height: 1.65; }
   h1 { border-bottom: 3px double #2b2a25; padding-bottom: .3em; }
@@ -62,7 +62,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'saltmarsh.zz',
     title: 'Walking the Salt Marsh',
-    author: 'Mara Quill',
+    author: 'Sarah Jones',
     html: `<style>
   body { background: #f3f1e4; color: #33361f; font-family: Georgia, serif; max-width: 36em; margin: 2.5em auto; padding: 0 1em; line-height: 1.75; }
   h1 { font-weight: normal; font-size: 2.2em; color: #5a6128; }
@@ -82,7 +82,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'nightferry.zz',
     title: 'Notes from the Night Ferry',
-    author: 'Theo Lindqvist',
+    author: 'John Smith',
     html: `<style>
   body { background: #101820; color: #d5dee6; font-family: 'Segoe UI', sans-serif; max-width: 38em; margin: 2em auto; padding: 0 1.2em; line-height: 1.7; }
   h1 { color: #f2c572; font-weight: 300; font-size: 2.4em; }
@@ -104,7 +104,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'inkandpress.zz',
     title: 'Ink & Press',
-    author: 'Theo Lindqvist',
+    author: 'John Smith',
     html: `<style>
   body { background: #fffdf8; color: #1d1a16; font-family: 'Palatino Linotype', Palatino, serif; max-width: 34em; margin: 3em auto; padding: 0 1em; line-height: 1.8; }
   h1 { font-size: 3em; letter-spacing: -.02em; color: #a12a1e; margin-bottom: 0; }
@@ -127,7 +127,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'mossgarden.zz',
     title: 'A Small Moss Garden',
-    author: 'Ines Okoye',
+    author: 'Emma Wilson',
     html: `<style>
   body { background: #eaf0e3; color: #27331f; font-family: Georgia, serif; max-width: 36em; margin: 2em auto; padding: 0 1em; line-height: 1.75; }
   h1 { color: #3e5f2a; }
@@ -152,7 +152,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'slowdough.zz',
     title: 'Slow Dough',
-    author: 'Ines Okoye',
+    author: 'Emma Wilson',
     html: `<style>
   body { background: #faf3e6; color: #3a2a1b; font-family: Verdana, sans-serif; max-width: 36em; margin: 2em auto; padding: 0 1em; line-height: 1.7; font-size: 15px; }
   h1 { color: #9a5b1f; font-family: Georgia, serif; font-size: 2.5em; }
@@ -179,7 +179,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'hivewatch.zz',
     title: 'Hive Watch',
-    author: 'Bram Ottley',
+    author: 'Ben Taylor',
     html: `<style>
   body { background: #fff8db; color: #33290a; font-family: Tahoma, sans-serif; max-width: 37em; margin: 2em auto; padding: 0 1em; line-height: 1.7; }
   h1 { background: #33290a; color: #ffd23f; padding: .4em .6em; }
@@ -208,7 +208,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'oldmaps.zz',
     title: 'Old Maps, Wrong Maps',
-    author: 'Noor Haddad',
+    author: 'David Miller',
     html: `<style>
   body { background: #f4ead5; color: #3b2e1e; font-family: 'Times New Roman', serif; max-width: 38em; margin: 2em auto; padding: 0 1em; line-height: 1.7; font-size: 18px; }
   h1 { text-align: center; font-variant: small-caps; letter-spacing: .05em; border-top: 2px solid; border-bottom: 2px solid; padding: .4em 0; }
@@ -230,7 +230,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: 'shortwave.zz',
     title: 'Shortwave After Midnight',
-    author: 'Sol Verano',
+    author: 'Mike Brown',
     html: `<style>
   body { background: #0b0f0a; color: #9df29d; font-family: 'Courier New', monospace; max-width: 40em; margin: 2em auto; padding: 0 1em; line-height: 1.65; }
   h1 { font-size: 1.8em; }
@@ -254,7 +254,7 @@ export const SITES: readonly SeedSite[] = [
   {
     address: HOSTILE_ADDRESS,
     title: 'Nothing To See Here',
-    author: 'Sol Verano',
+    author: 'Mike Brown',
     html: `<meta http-equiv="refresh" content="0; url=https://example.com/stolen">
 <base href="https://example.com/">
 <script>

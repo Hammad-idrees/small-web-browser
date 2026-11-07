@@ -14,7 +14,7 @@ import {
  * against the built app. Detailed cases live in the unit and API tests.
  */
 test.beforeEach(async ({ page }) => {
-  await startAs(page, 'Noor Haddad');
+  await startAs(page, 'David Miller');
 });
 
 test('a trail four deep, Back and Forward across it, and Forward lost', async ({
@@ -111,7 +111,7 @@ test('publishing a page puts it on the small web at once', async ({ page }) => {
   await frameReady(page);
 
   expect(pathname(page)).toBe(`/site/${address}`);
-  await expect(page.getByText('by Noor Haddad')).toBeVisible();
+  await expect(page.getByText('by David Miller')).toBeVisible();
   await expect(
     page.frameLocator('main iframe').getByText('Found on the strandline'),
   ).toBeVisible();

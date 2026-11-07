@@ -164,7 +164,7 @@ describe('the seeded history', () => {
 
   it('has someone who has been nearly everywhere', () => {
     const noor = seed.visits.filter(
-      (visit) => personName(visit.personId) === 'Noor Haddad' && visit.found,
+      (visit) => personName(visit.personId) === 'David Miller' && visit.found,
     );
     const been = new Set(noor.map((visit) => visit.address));
     expect(been.size).toBeGreaterThanOrEqual(proseSites.length);

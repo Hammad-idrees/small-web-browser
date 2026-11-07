@@ -4,8 +4,8 @@ import { Navigator, type NavigatorEnvironment } from './navigator';
 import type { Route } from './route-codec';
 import { currentEntry, entryAhead, entryBehind, type Trail } from './trail';
 
-const NOOR: Person = { id: 'a'.repeat(24), name: 'Noor Haddad' };
-const MARA: Person = { id: 'b'.repeat(24), name: 'Mara Quill' };
+const NOOR: Person = { id: 'a'.repeat(24), name: 'David Miller' };
+const MARA: Person = { id: 'b'.repeat(24), name: 'Sarah Jones' };
 const REAL_SITES = ['a.zz', 'b.zz', 'c.zz', 'd.zz', 'slow.zz', 'fast.zz'];
 
 const site = (address: string): SiteSummary => ({

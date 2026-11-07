@@ -12,7 +12,7 @@ interface PersonPickerProps {
   readonly onChange: (personId: string) => void;
   /** `nav`: the dark chip in the navbar. `field`: a full-width form field on white. */
   readonly variant?: 'nav' | 'field';
-  /** Said before the chosen name, like "Browsing as Noor Haddad". */
+  /** Said before the chosen name, like "Browsing as David Miller". */
   readonly labelPrefix?: string;
   /** The small heading over the open list. */
   readonly listLabel?: string;

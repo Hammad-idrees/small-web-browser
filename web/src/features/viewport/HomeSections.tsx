@@ -7,7 +7,7 @@ const PLACES_TO_BEGIN = [
     title: 'The Tide Pool Journal',
     blurb:
       'Eleven years of notes on the same few rock pools, and the creatures that never leave them.',
-    author: 'Mara Quill',
+    author: 'Sarah Jones',
     topic: 'Field notes',
   },
   {
@@ -15,7 +15,7 @@ const PLACES_TO_BEGIN = [
     title: 'Old Maps, Wrong Maps',
     blurb:
       'Honest charts, careful people, and the islands that were drawn in but never were.',
-    author: 'Noor Haddad',
+    author: 'David Miller',
     topic: 'Cartography',
   },
   {
@@ -23,7 +23,7 @@ const PLACES_TO_BEGIN = [
     title: 'Notes from the Night Ferry',
     blurb:
       'The last boat of the day, the dozen people who ride it, and what they talk about.',
-    author: 'Theo Lindqvist',
+    author: 'John Smith',
     topic: 'Travel',
   },
   {
@@ -31,7 +31,7 @@ const PLACES_TO_BEGIN = [
     title: 'Slow Dough',
     blurb:
       'A nine-year-old starter called Gerald, and everything it has taught about patience.',
-    author: 'Ines Okoye',
+    author: 'Emma Wilson',
     topic: 'Kitchen',
   },
 ] as const;

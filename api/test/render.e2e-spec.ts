@@ -76,7 +76,7 @@ describe('Resolving and rendering (e2e)', () => {
       const response = await request(server()).get('/api/people').expect(200);
       const people = z.array(personSchema).parse(response.body);
       const names = people.map((person) => person.name);
-      expect(names).toContain('Noor Haddad');
+      expect(names).toContain('David Miller');
       expect(names).toEqual([...names].sort());
     });
   });
@@ -89,7 +89,7 @@ describe('Resolving and rendering (e2e)', () => {
       expect(siteSummarySchema.parse(response.body)).toMatchObject({
         address: 'tidepool.zz',
         title: 'The Tide Pool Journal',
-        authorName: 'Mara Quill',
+        authorName: 'Sarah Jones',
       });
     });
 

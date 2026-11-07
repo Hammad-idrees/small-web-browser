@@ -20,7 +20,7 @@ export const DEMO_WALK = {
 
 export const TRAILS: readonly Trail[] = [
   {
-    person: 'Noor Haddad',
+    person: 'David Miller',
     startMinute: 2,
     steps: [
       ['typed', 'tidepool.zz'],
@@ -34,12 +34,12 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Sol Verano',
+    person: 'Mike Brown',
     startMinute: 4,
     steps: [['typed', 'tidepool.zz']],
   },
   {
-    person: 'Mara Quill',
+    person: 'Sarah Jones',
     startMinute: 5,
     steps: [
       ['typed', 'nightferry.zz'],
@@ -49,7 +49,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Theo Lindqvist',
+    person: 'John Smith',
     startMinute: 10,
     steps: [
       ['search', 'slowdough.zz'],
@@ -60,7 +60,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Ines Okoye',
+    person: 'Emma Wilson',
     startMinute: 15,
     steps: [
       ['typed', 'inkandpress.zz'],
@@ -68,7 +68,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Noor Haddad',
+    person: 'David Miller',
     startMinute: 20,
     steps: [
       ['typed', 'oldmaps.zz'],
@@ -76,7 +76,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Bram Ottley',
+    person: 'Ben Taylor',
     startMinute: 25,
     steps: [
       ['typed', 'harbourlight.zz'],
@@ -85,7 +85,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Mara Quill',
+    person: 'Sarah Jones',
     startMinute: 30,
     steps: [
       ['typed', 'tidepool.zz'],
@@ -94,7 +94,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Noor Haddad',
+    person: 'David Miller',
     startMinute: 34,
     steps: [
       ['search', 'mossgarden.zz'],
@@ -103,7 +103,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Theo Lindqvist',
+    person: 'John Smith',
     startMinute: 40,
     steps: [
       ['typed', 'hivewatch.zz'],
@@ -111,7 +111,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Sol Verano',
+    person: 'Mike Brown',
     startMinute: 44,
     steps: [
       ['history', 'tidepool.zz'],
@@ -120,7 +120,7 @@ export const TRAILS: readonly Trail[] = [
     ],
   },
   {
-    person: 'Ines Okoye',
+    person: 'Emma Wilson',
     startMinute: 52,
     steps: [
       ['history', 'inkandpress.zz'],

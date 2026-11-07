@@ -76,7 +76,7 @@ describe('Visits and history (e2e)', () => {
 
   describe('PUT /api/visits/:entryId', () => {
     it('records a visit to a page, with the server’s time', async () => {
-      const noor = personNamed('Noor Haddad');
+      const noor = personNamed('David Miller');
       const before = Date.now();
       const response = await put(randomUUID(), {
         personId: noor.id,
@@ -97,7 +97,7 @@ describe('Visits and history (e2e)', () => {
 
     it('records an address that led nowhere', async () => {
       const response = await put(randomUUID(), {
-        personId: personNamed('Mara Quill').id,
+        personId: personNamed('Sarah Jones').id,
         address: 'never-was.zz',
         versionId: null,
         via: 'link',
@@ -112,7 +112,7 @@ describe('Visits and history (e2e)', () => {
     it('gives back the same visit when the same report arrives twice', async () => {
       const entryId = randomUUID();
       const body = {
-        personId: personNamed('Noor Haddad').id,
+        personId: personNamed('David Miller').id,
         address: 'tidepool.zz',
         versionId: await versionOf('tidepool.zz'),
         via: 'link',
@@ -127,7 +127,7 @@ describe('Visits and history (e2e)', () => {
     it('records only one visit when the same report arrives at once', async () => {
       const entryId = randomUUID();
       const body = {
-        personId: personNamed('Noor Haddad').id,
+        personId: personNamed('David Miller').id,
         address: 'tidepool.zz',
         versionId: await versionOf('tidepool.zz'),
         via: 'link',
@@ -144,7 +144,7 @@ describe('Visits and history (e2e)', () => {
 
     it('refuses to reuse an entry id for a different visit', async () => {
       const entryId = randomUUID();
-      const personId = personNamed('Noor Haddad').id;
+      const personId = personNamed('David Miller').id;
       await put(entryId, {
         personId,
         address: 'tidepool.zz',
@@ -163,7 +163,7 @@ describe('Visits and history (e2e)', () => {
 
     it('refuses a version reported at the wrong address', async () => {
       await put(randomUUID(), {
-        personId: personNamed('Noor Haddad').id,
+        personId: personNamed('David Miller').id,
         address: 'tidepool.zz',
         versionId: await versionOf('oldmaps.zz'),
         via: 'link',
@@ -172,7 +172,7 @@ describe('Visits and history (e2e)', () => {
 
     it('refuses a version that does not exist', async () => {
       await put(randomUUID(), {
-        personId: personNamed('Noor Haddad').id,
+        personId: personNamed('David Miller').id,
         address: 'tidepool.zz',
         versionId: '0'.repeat(24),
         via: 'link',
@@ -197,7 +197,7 @@ describe('Visits and history (e2e)', () => {
       ['a found flag chosen by the browser', 'ok', { found: true }],
     ])('refuses %s', async (_name, entryId, change) => {
       await put(entryId, {
-        personId: personNamed('Noor Haddad').id,
+        personId: personNamed('David Miller').id,
         address: 'tidepool.zz',
         versionId: null,
         via: 'link',
@@ -208,7 +208,7 @@ describe('Visits and history (e2e)', () => {
 
   describe('GET /api/people/:personId/visits', () => {
     it('lists the whole seeded history across pages, newest first, with no repeats', async () => {
-      const noor = personNamed('Noor Haddad');
+      const noor = personNamed('David Miller');
       const all = await everything(noor.id, 4);
       const stored = await visits.countDocuments({
         personId: new Types.ObjectId(noor.id),
@@ -221,8 +221,8 @@ describe('Visits and history (e2e)', () => {
     });
 
     it('gives each person their own history', async () => {
-      const noor = await everything(personNamed('Noor Haddad').id, 50);
-      const mara = await everything(personNamed('Mara Quill').id, 50);
+      const noor = await everything(personNamed('David Miller').id, 50);
+      const mara = await everything(personNamed('Sarah Jones').id, 50);
       expect(noor.length).toBeGreaterThan(mara.length);
       expect(noor.map((v) => v.id)).not.toEqual(
         expect.arrayContaining(mara.map((v) => v.id)),
@@ -230,7 +230,7 @@ describe('Visits and history (e2e)', () => {
     });
 
     it('includes titles as they were seen, and dead addresses', async () => {
-      const all = await everything(personNamed('Noor Haddad').id, 50);
+      const all = await everything(personNamed('David Miller').id, 50);
       expect(all).toContainEqual(
         expect.objectContaining({
           address: 'tidepool.zz',
@@ -248,7 +248,7 @@ describe('Visits and history (e2e)', () => {
     });
 
     it('keeps visits at the same moment in a stable order across pages', async () => {
-      const personId = personNamed('Bram Ottley').id;
+      const personId = personNamed('Ben Taylor').id;
       const sameMoment = new Date('2026-11-01T09:59:00.000Z');
       await visits.insertMany(
         Array.from({ length: 5 }, (_, index) => ({
@@ -269,7 +269,7 @@ describe('Visits and history (e2e)', () => {
     });
 
     it('does not shift pages when someone visits while another scrolls', async () => {
-      const noor = personNamed('Noor Haddad');
+      const noor = personNamed('David Miller');
       const first = visitPageSchema.parse(
         (
           await request(server())
@@ -298,7 +298,7 @@ describe('Visits and history (e2e)', () => {
 
     it('says when there is nothing more', async () => {
       const response = await request(server())
-        .get(`/api/people/${personNamed('Mara Quill').id}/visits`)
+        .get(`/api/people/${personNamed('Sarah Jones').id}/visits`)
         .query({ limit: 50 })
         .expect(200);
       expect(visitPageSchema.parse(response.body).nextCursor).toBeNull();
@@ -310,7 +310,7 @@ describe('Visits and history (e2e)', () => {
       ['a page of nothing', { limit: '0' }],
     ])('refuses %s', async (_name, query) => {
       await request(server())
-        .get(`/api/people/${personNamed('Noor Haddad').id}/visits`)
+        .get(`/api/people/${personNamed('David Miller').id}/visits`)
         .query(query)
         .expect(400);
     });

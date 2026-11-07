@@ -1,10 +1,10 @@
 export const PEOPLE = [
-  'Mara Quill',
-  'Theo Lindqvist',
-  'Ines Okoye',
-  'Bram Ottley',
-  'Noor Haddad',
-  'Sol Verano',
+  'Sarah Jones',
+  'John Smith',
+  'Emma Wilson',
+  'Ben Taylor',
+  'David Miller',
+  'Mike Brown',
 ] as const;
 
 export type PersonName = (typeof PEOPLE)[number];
