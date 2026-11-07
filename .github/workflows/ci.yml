@@ -16,12 +16,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 
-    services:
-      mongo:
-        image: mongo:8
-        ports:
-          - 27017:27017
-
     steps:
       - uses: actions/checkout@v5
 
@@ -32,17 +26,20 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      # Mongo starts alongside the job; wait here until it accepts connections.
-      - name: Wait for MongoDB
+      # Started by hand rather than as a service container, so if it fails its own
+      # logs are printed here. Pinned to the same release used in development.
+      - name: Start MongoDB
         run: |
+          docker run --detach --name mongo --publish 27017:27017 mongo:8.0
           for attempt in $(seq 1 30); do
-            if nc -z localhost 27017; then
+            if docker exec mongo mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' > /dev/null 2>&1; then
               echo "MongoDB is up"
               exit 0
             fi
             sleep 2
           done
-          echo "MongoDB did not start" >&2
+          echo "MongoDB did not start. Its logs:" >&2
+          docker logs mongo >&2
           exit 1
 
       - name: Install
