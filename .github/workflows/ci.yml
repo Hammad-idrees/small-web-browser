@@ -12,8 +12,10 @@ concurrency:
 jobs:
   check:
     name: Lint, typecheck and test
-    # Pinned, so a change of what "latest" means cannot change CI unannounced.
-    runs-on: ubuntu-24.04
+    # Ubuntu 22.04: MongoDB 8.0 refuses to start on Linux kernel 6.19 and newer,
+    # which the 24.04 runners now use (https://jira.mongodb.org/browse/SERVER-121912).
+    # Move up once MongoDB ships a fix. Pinned either way, never "latest".
+    runs-on: ubuntu-22.04
     timeout-minutes: 20
 
     steps:
