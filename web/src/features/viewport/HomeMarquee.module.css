@@ -1,21 +1,31 @@
 /*
- * A slim strip under the hero, in the navbar's black with neon accents, its
- * phrases sliding left without end.
+ * A slim white strip under the hero: the logos of the stack this site is built
+ * with, in their own colours on clear glass tiles, sliding left without end.
  */
 .marquee {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid rgb(255 255 255 / 6%);
-  border-bottom: 1px solid rgb(255 255 255 / 6%);
-  background: linear-gradient(180deg, #161616, #0a0a0a);
-  color: var(--chrome-ink);
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
+
+  /*
+   * A faint tint and soft colour pools behind the tiles, so the glass has
+   * something to show through; on plain white it would look like plain white.
+   */
+  background:
+    radial-gradient(ellipse 30% 120% at 15% 50%, rgb(61 252 143 / 10%), transparent 70%),
+    radial-gradient(ellipse 30% 120% at 85% 50%, rgb(49 120 198 / 7%), transparent 70%),
+    linear-gradient(180deg, #ffffff, #f8f9f8);
+
+  /* Logos arrive and leave softly at the edges. */
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
 
 /* Two identical runs side by side; moving by exactly one run's width loops seamlessly. */
 .track {
   display: flex;
   width: max-content;
-  animation: slide 40s linear infinite;
+  animation: slide 18s linear infinite;
 }
 
 .marquee:hover .track {
@@ -36,64 +46,61 @@
   list-style: none;
 }
 
-.pair {
+/* Wide gaps, so each logo stands on its own. */
+.item {
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 16px 0;
+  padding: 18px 72px 18px 0;
+}
+
+/* Just the logo: no tile behind it. It lifts a little when pointed at. */
+.tile {
+  display: grid;
+  place-items: center;
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tile:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* The logo is the SVG used as a mask over its brand's colour. */
+.logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-color: var(--brand);
+  mask: var(--logo) center / contain no-repeat;
+}
+
+/* Read by screen readers, not shown: the strip itself is logos only. */
+.name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
-.strong {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-}
-
-/* The navbar's soft grey: ~8:1 on this black. */
-.soft {
-  color: #c4c4c4;
-  font-size: 17px;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--neon);
-  box-shadow: 0 0 6px rgb(61 252 143 / 60%);
-}
-
-.slashes {
-  margin: 0 30px 0 12px;
-  color: var(--neon);
-  font-size: 19px;
-  font-style: italic;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-}
-
 @media (max-width: 640px) {
-  .pair {
-    gap: 12px;
-    padding: 12px 0;
+  .item {
+    padding: 14px 44px 14px 0;
   }
 
-  .strong,
-  .soft {
-    font-size: 15px;
-  }
-
-  .slashes {
-    margin: 0 20px 0 8px;
+  .logo {
+    width: 26px;
+    height: 26px;
   }
 }
 
-/* Still, when motion is unwelcome: the first phrases simply sit there. */
+/* Still, when motion is unwelcome: the first logos simply sit there. */
 @media (prefers-reduced-motion: reduce) {
   .track {
     animation: none;
+  }
+
+  .tile {
+    transition: none;
   }
 }
