@@ -45,7 +45,9 @@ describe('Resolving and rendering (e2e)', () => {
 
   describe('security headers', () => {
     it('locks down JSON responses and does not say what serves them', async () => {
-      const { headers } = await request(server()).get('/api/people').expect(200);
+      const { headers } = await request(server())
+        .get('/api/people')
+        .expect(200);
       expect(headers['x-powered-by']).toBeUndefined();
       expect(headers['x-content-type-options']).toBe('nosniff');
       expect(headers['content-security-policy']).toBe(

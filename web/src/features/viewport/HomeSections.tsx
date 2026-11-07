@@ -5,28 +5,32 @@ const PLACES_TO_BEGIN = [
   {
     address: 'tidepool.zz',
     title: 'The Tide Pool Journal',
-    blurb: 'Eleven years of notes on the same few rock pools, and the creatures that never leave them.',
+    blurb:
+      'Eleven years of notes on the same few rock pools, and the creatures that never leave them.',
     author: 'Mara Quill',
     topic: 'Field notes',
   },
   {
     address: 'oldmaps.zz',
     title: 'Old Maps, Wrong Maps',
-    blurb: 'Honest charts, careful people, and the islands that were drawn in but never were.',
+    blurb:
+      'Honest charts, careful people, and the islands that were drawn in but never were.',
     author: 'Noor Haddad',
     topic: 'Cartography',
   },
   {
     address: 'nightferry.zz',
     title: 'Notes from the Night Ferry',
-    blurb: 'The last boat of the day, the dozen people who ride it, and what they talk about.',
+    blurb:
+      'The last boat of the day, the dozen people who ride it, and what they talk about.',
     author: 'Theo Lindqvist',
     topic: 'Travel',
   },
   {
     address: 'slowdough.zz',
     title: 'Slow Dough',
-    blurb: 'A nine-year-old starter called Gerald, and everything it has taught about patience.',
+    blurb:
+      'A nine-year-old starter called Gerald, and everything it has taught about patience.',
     author: 'Ines Okoye',
     topic: 'Kitchen',
   },

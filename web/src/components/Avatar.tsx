@@ -29,7 +29,12 @@ interface AvatarProps {
 }
 
 /** A person's initials on a colour of their own. Decorative: the name is said nearby. */
-export function Avatar({ name, size = 28, tone = 'dark', className }: AvatarProps) {
+export function Avatar({
+  name,
+  size = 28,
+  tone = 'dark',
+  className,
+}: AvatarProps) {
   return (
     <span
       className={`${styles.avatar} ${tone === 'light' ? styles.light : ''} ${className ?? ''}`}

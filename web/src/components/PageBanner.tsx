@@ -12,7 +12,12 @@ interface PageBannerProps {
 }
 
 /** The top of an inner page: white, a big title, a turning gear, and a way home. */
-export function PageBanner({ title, subtitle, crumb, onHome }: PageBannerProps) {
+export function PageBanner({
+  title,
+  subtitle,
+  crumb,
+  onHome,
+}: PageBannerProps) {
   return (
     <header className={styles.banner}>
       <div className={styles.grid} aria-hidden="true">

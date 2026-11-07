@@ -16,6 +16,7 @@
     "typecheck": "pnpm build:contracts && pnpm -r --if-present typecheck",
     "test": "pnpm build:contracts && pnpm -r --if-present test",
     "test:e2e": "pnpm build:contracts && pnpm --filter api test:e2e",
+    "test:browser": "pnpm build:contracts && pnpm --filter e2e build && pnpm --filter e2e test:browser",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

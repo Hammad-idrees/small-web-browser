@@ -102,7 +102,8 @@ function WrittenBy({ people }: { readonly people: readonly Person[] }) {
         <span className={styles.writtenByNames}>{named.join(', ')}</span>
         {others > 0 ? (
           <>
-            {' '}and {others} {others === 1 ? 'other' : 'more'}
+            {' '}
+            and {others} {others === 1 ? 'other' : 'more'}
           </>
         ) : null}
       </p>

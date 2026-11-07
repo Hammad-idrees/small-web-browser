@@ -1,13 +1,7 @@
 'use client';
 
 import type { Person } from '@small-web/contracts';
-import {
-  type KeyboardEvent,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import { type KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
 import { Avatar } from '@/components/Avatar';
 import { CheckIcon, ChevronIcon } from './icons';
 import styles from './PersonPicker.module.css';
@@ -115,7 +109,9 @@ export function PersonPicker({
       close(false);
     } else if (/^\p{L}$/u.test(event.key)) {
       const letter = event.key.toLowerCase();
-      const order = [...people.keys()].map((i) => (active + 1 + i) % people.length);
+      const order = [...people.keys()].map(
+        (i) => (active + 1 + i) % people.length,
+      );
       const match = order.find((i) =>
         people[i]?.name.toLowerCase().startsWith(letter),
       );

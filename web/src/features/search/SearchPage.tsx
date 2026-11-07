@@ -108,7 +108,9 @@ export function SearchPage({
                 <span className={styles.resultBody}>
                   <span className={styles.meta}>
                     <span className={styles.address}>{result.address}</span>
-                    <span className={styles.author}>by {result.authorName}</span>
+                    <span className={styles.author}>
+                      by {result.authorName}
+                    </span>
                   </span>
                   <span className={styles.resultTitle}>{result.title}</span>
                   <span className={styles.snippet}>
@@ -148,7 +150,9 @@ export function SearchPage({
             </span>
           ) : complete ? (
             <span className={styles.end}>
-              {items.length === 1 ? 'One page' : `${String(items.length)} pages`}{' '}
+              {items.length === 1
+                ? 'One page'
+                : `${String(items.length)} pages`}{' '}
               found
             </span>
           ) : null}

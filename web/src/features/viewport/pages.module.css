@@ -38,7 +38,11 @@
     linear-gradient(rgb(0 0 0 / 6%) 1px, transparent 1px),
     linear-gradient(90deg, rgb(0 0 0 / 6%) 1px, transparent 1px);
   background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 45%,
+    #000 20%,
+    transparent 75%
+  );
 }
 
 .heroGlow {
@@ -276,7 +280,11 @@
     linear-gradient(rgb(0 0 0 / 6%) 1px, transparent 1px),
     linear-gradient(90deg, rgb(0 0 0 / 6%) 1px, transparent 1px);
   background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(
+    ellipse 60% 55% at 50% 50%,
+    #000 15%,
+    transparent 72%
+  );
 }
 
 /* Rings with gaps in them: something that should be here, and is not. */

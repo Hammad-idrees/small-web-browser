@@ -13,12 +13,26 @@
    * something to show through; on plain white it would look like plain white.
    */
   background:
-    radial-gradient(ellipse 30% 120% at 15% 50%, rgb(61 252 143 / 10%), transparent 70%),
-    radial-gradient(ellipse 30% 120% at 85% 50%, rgb(49 120 198 / 7%), transparent 70%),
+    radial-gradient(
+      ellipse 30% 120% at 15% 50%,
+      rgb(61 252 143 / 10%),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 30% 120% at 85% 50%,
+      rgb(49 120 198 / 7%),
+      transparent 70%
+    ),
     linear-gradient(180deg, #ffffff, #f8f9f8);
 
   /* Logos arrive and leave softly at the edges. */
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
 }
 
 /* Two identical runs side by side; moving by exactly one run's width loops seamlessly. */

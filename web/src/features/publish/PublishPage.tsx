@@ -6,13 +6,7 @@ import {
   type Person,
   publishSchema,
 } from '@small-web/contracts';
-import {
-  type SubmitEvent,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import { type SubmitEvent, useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/Button';
 import { PageBanner } from '@/components/PageBanner';
 import { ApiRequestError, publishPage } from '@/lib/api-client';
@@ -245,12 +239,7 @@ export function PublishPage({
             ) : null}
 
             <div className={styles.actions}>
-              <Button
-                type="submit"
-                variant="neon"
-                size="lg"
-                disabled={sending}
-              >
+              <Button type="submit" variant="neon" size="lg" disabled={sending}>
                 {sending ? 'Publishing…' : 'Publish'}
               </Button>
             </div>

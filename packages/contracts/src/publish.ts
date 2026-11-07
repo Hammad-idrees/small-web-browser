@@ -26,7 +26,9 @@ export const publishSchema = z.strictObject({
     .string()
     .trim()
     .min(1, { message: 'Give the page a title' })
-    .max(MAX_TITLE, { message: `Keep the title under ${String(MAX_TITLE)} characters` }),
+    .max(MAX_TITLE, {
+      message: `Keep the title under ${String(MAX_TITLE)} characters`,
+    }),
   html: z
     .string()
     .trim()
