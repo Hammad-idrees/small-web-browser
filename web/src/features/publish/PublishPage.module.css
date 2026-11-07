@@ -75,8 +75,7 @@
 }
 
 /* One height and one inner edge for every field, so text lines up down the form. */
-.input,
-.select {
+.input {
   width: 100%;
   padding: 13px 18px;
   border: 1px solid #d0d0d0;
@@ -92,38 +91,21 @@
     box-shadow 160ms ease;
 }
 
-/*
- * The browser's own arrow sits hard against the edge, so it is replaced with a
- * chevron placed as far in as the text is.
- */
-.select {
-  height: 52px;
-  padding-right: 48px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234d4d4d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-position: right 18px center;
-  background-repeat: no-repeat;
-  background-size: 16px;
-  cursor: pointer;
-}
-
 .input::placeholder {
   color: #9a9a9a;
 }
 
-.input:hover,
-.select:hover {
+.input:hover {
   border-color: #a8a8a8;
 }
 
-/* Focused: white, black edge, like a hovered card. */
-.input:not(.textarea),
-.select {
+.input:not(.textarea) {
   height: 52px;
 }
 
-.input:focus,
-.select:focus {
+/* Focused: white, black edge, like a hovered card. */
+
+.input:focus {
   border-color: #0a0a0a;
   background-color: #ffffff;
   box-shadow: 0 0 0 1px #0a0a0a;

@@ -16,14 +16,31 @@ interface PersonPickerProps {
   readonly people: readonly Person[];
   readonly personId: string | null;
   readonly onChange: (personId: string) => void;
+  /** `nav`: the dark chip in the navbar. `field`: a full-width form field on white. */
+  readonly variant?: 'nav' | 'field';
+  /** Said before the chosen name, like "Browsing as Noor Haddad". */
+  readonly labelPrefix?: string;
+  /** The small heading over the open list. */
+  readonly listLabel?: string;
+  /** In a form: the chosen id is submitted under this name. */
+  readonly name?: string;
 }
 
 /**
- * Who is browsing. A button that opens a listbox, following the ARIA listbox pattern:
+ * Picks a person. A button that opens a listbox, following the ARIA listbox pattern:
  * arrows, Home and End move, Enter or Space chooses, Escape closes, and typing a
  * letter jumps to the next name that starts with it.
  */
-export function PersonPicker({ people, personId, onChange }: PersonPickerProps) {
+export function PersonPicker({
+  people,
+  personId,
+  onChange,
+  variant = 'nav',
+  labelPrefix = 'Browsing as',
+  listLabel = 'Browse as',
+  name,
+}: PersonPickerProps) {
+  const field = variant === 'field';
   const listId = useId();
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -107,12 +124,13 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
   };
 
   return (
-    <div className={styles.picker} ref={root}>
+    <div className={`${styles.picker} ${field ? styles.field : ''}`} ref={root}>
+      {name ? <input type="hidden" name={name} value={personId ?? ''} /> : null}
       <button
         ref={trigger}
         type="button"
         className={styles.trigger}
-        aria-label={person ? `Browsing as ${person.name}` : 'Browsing as'}
+        aria-label={person ? `${labelPrefix} ${person.name}` : labelPrefix}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
@@ -124,7 +142,11 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
         onKeyDown={onTriggerKey}
       >
         {person ? (
-          <Avatar name={person.name} size={26} />
+          <Avatar
+            name={person.name}
+            size={field ? 30 : 26}
+            tone={field ? 'light' : 'dark'}
+          />
         ) : (
           <span className={styles.avatarEmpty} />
         )}
@@ -137,7 +159,7 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
       {open ? (
         <div className={styles.panel}>
           <p className={styles.panelLabel} id={`${listId}-label`}>
-            Browse as
+            {listLabel}
           </p>
           <ul
             ref={list}
@@ -165,7 +187,11 @@ export function PersonPicker({ people, personId, onChange }: PersonPickerProps) 
                     choose(index);
                   }}
                 >
-                  <Avatar name={candidate.name} size={24} />
+                  <Avatar
+                    name={candidate.name}
+                    size={field ? 28 : 24}
+                    tone={field ? 'light' : 'dark'}
+                  />
                   <span className={styles.optionName}>{candidate.name}</span>
                   {selected ? (
                     <span className={styles.check} aria-hidden="true">

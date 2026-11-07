@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/Button';
 import { PageBanner } from '@/components/PageBanner';
 import { ApiRequestError, publishPage } from '@/lib/api-client';
+import { PersonPicker } from '../chrome/PersonPicker';
 import {
   clearDraft,
   loadDraft,
@@ -58,6 +59,7 @@ export function PublishPage({
   const form = useRef<HTMLFormElement>(null);
   const pane = useRef<HTMLDivElement>(null);
   const [draft] = useState<PublishDraft | null>(loadDraft);
+  const [authorId, setAuthorId] = useState(draft?.authorId || personId);
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [failure, setFailure] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
@@ -158,24 +160,25 @@ export function PublishPage({
             }}
             noValidate
           >
-            <label className={styles.field}>
-              <span className={styles.label}>Publishing as</span>
-              <select
+            <div className={styles.field}>
+              <span className={styles.label} aria-hidden="true">
+                Publishing as
+              </span>
+              <PersonPicker
+                variant="field"
                 name="authorId"
-                className={styles.select}
-                defaultValue={draft?.authorId || personId}
-                onChange={() => {
-                  saveDraft(read());
+                labelPrefix="Publishing as"
+                listLabel="Publish as"
+                people={people}
+                personId={authorId}
+                onChange={(id) => {
+                  setAuthorId(id);
+                  // The hidden field updates on the next render, so pass the choice in.
+                  saveDraft({ ...read(), authorId: id });
                 }}
-              >
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.name}
-                  </option>
-                ))}
-              </select>
+              />
               <FieldError message={errors.authorId} />
-            </label>
+            </div>
 
             <label className={styles.field}>
               <span className={styles.label}>Address</span>
