@@ -4,7 +4,13 @@ import type { Person } from '@small-web/contracts';
 import type { Route } from '../navigation/route-codec';
 import type { TrailLocation } from '../navigation/trail';
 import { AddressBar } from './AddressBar';
-import { BackIcon, ForwardIcon, HistoryIcon, LogoMark } from './icons';
+import {
+  BackIcon,
+  ForwardIcon,
+  HistoryIcon,
+  LogoMark,
+  PublishIcon,
+} from './icons';
 import { PersonPicker } from './PersonPicker';
 import styles from './Toolbar.module.css';
 
@@ -21,6 +27,7 @@ interface ToolbarProps {
   readonly onForward: () => void;
   readonly onNavigate: (route: Route) => void;
   readonly onPersonChange: (personId: string) => void;
+  readonly onEdit?: () => void;
 }
 
 export function Toolbar({
@@ -36,6 +43,7 @@ export function Toolbar({
   onForward,
   onNavigate,
   onPersonChange,
+  onEdit,
 }: ToolbarProps) {
   return (
     <header className={styles.toolbar}>
@@ -80,7 +88,22 @@ export function Toolbar({
         location={location}
         disabled={!ready}
         onSubmit={onNavigate}
+        onEdit={onEdit}
       />
+
+      <button
+        type="button"
+        className={styles.iconButton}
+        aria-label="Publish"
+        title="Publish a page"
+        aria-current={location?.kind === 'publish' ? 'page' : undefined}
+        disabled={!ready}
+        onClick={() => {
+          onNavigate({ kind: 'publish' });
+        }}
+      >
+        <PublishIcon />
+      </button>
 
       <button
         type="button"

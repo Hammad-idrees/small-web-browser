@@ -26,6 +26,10 @@ export class Site {
   })
   currentVersionId: Types.ObjectId;
 
+  /** The number of the current version. Only ever moves forward. */
+  @Prop({ type: Number, required: true, min: 1 })
+  versionNumber: number;
+
   @Prop({ type: String, required: true })
   title: string;
 

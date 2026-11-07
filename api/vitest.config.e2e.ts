@@ -8,6 +8,9 @@ export default defineConfig({
     include: ['test/**/*.e2e-spec.ts'],
     // Suites share one database, so they must not run at the same time.
     fileParallelism: false,
-    env: { MONGODB_URI: 'mongodb://127.0.0.1:27017/small_web_test' },
+    env: {
+      MONGODB_URI: 'mongodb://127.0.0.1:27017/small_web_test',
+      PUBLISH_LIMIT_PER_MINUTE: '1000',
+    },
   },
 });

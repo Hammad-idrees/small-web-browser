@@ -137,7 +137,26 @@
   white-space: nowrap;
 }
 
-.addressBar:focus-within .byline {
+.edit {
+  flex: none;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-raised);
+  color: var(--accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.edit:hover {
+  border-color: var(--accent);
+}
+
+/* Only while typing. Hiding them on any focus would hide Edit as it is clicked. */
+.addressInput:focus ~ .edit,
+.addressInput:focus ~ .byline {
   display: none;
 }
 

@@ -1,6 +1,13 @@
 import {
+  type ApiError,
+  apiErrorSchema,
+  type PageSource,
+  pageSourceSchema,
   type Person,
   personSchema,
+  type Publish,
+  type PublishResult,
+  publishResultSchema,
   type RecordVisit,
   type SearchPage,
   searchPageSchema,
@@ -13,6 +20,26 @@ import { z } from 'zod';
 import { env } from './env';
 
 const API_URL = env.NEXT_PUBLIC_API_URL;
+
+/** A response the API refused, with the reason it gave when there is one. */
+export class ApiRequestError extends Error {
+  constructor(
+    readonly status: number,
+    readonly body: ApiError | null,
+  ) {
+    super(body?.message ?? `Request failed with ${status}`);
+  }
+}
+
+async function refusal(response: Response): Promise<ApiRequestError> {
+  const parsed = apiErrorSchema.safeParse(
+    await response.json().catch(() => null),
+  );
+  return new ApiRequestError(
+    response.status,
+    parsed.success ? parsed.data : null,
+  );
+}
 
 export async function listPeople(): Promise<Person[]> {
   const response = await fetch(`${API_URL}/api/people`);
@@ -92,6 +119,24 @@ export async function searchSites(
   const response = await fetch(`${API_URL}/api/search?${params.toString()}`);
   if (!response.ok) throw new Error(`Search: ${response.status}`);
   return searchPageSchema.parse(await response.json());
+}
+
+/** Publishes a page. Rejects with an ApiRequestError saying why, when refused. */
+export async function publishPage(page: Publish): Promise<PublishResult> {
+  const response = await fetch(`${API_URL}/api/sites`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(page),
+  });
+  if (!response.ok) throw await refusal(response);
+  return publishResultSchema.parse(await response.json());
+}
+
+/** A version as its author wrote it, for editing. It is shown as text, never rendered. */
+export async function getPageSource(versionId: string): Promise<PageSource> {
+  const response = await fetch(`${API_URL}/api/versions/${versionId}/source`);
+  if (!response.ok) throw await refusal(response);
+  return pageSourceSchema.parse(await response.json());
 }
 
 /** Where a contained page is served from. */

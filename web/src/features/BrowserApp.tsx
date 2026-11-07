@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { getPageSource } from '@/lib/api-client';
 import styles from './BrowserApp.module.css';
 import { Toolbar } from './chrome/Toolbar';
 import type { Route } from './navigation/route-codec';
@@ -11,6 +12,7 @@ import {
   type TrailLocation,
 } from './navigation/trail';
 import { useNavigator } from './navigation/useNavigator';
+import { saveDraft } from './publish/publish-draft';
 import { OfflinePage } from './viewport/StatusPages';
 import { Viewport } from './viewport/Viewport';
 
@@ -41,6 +43,34 @@ export function BrowserApp() {
   const ready = status === 'ready';
   const person = people.find((candidate) => candidate.id === personId);
 
+  // Your own page can be edited: the publish form opens with what you wrote.
+  const ownPage =
+    location?.kind === 'site' &&
+    trail.pending === null &&
+    person !== undefined &&
+    location.authorName === person.name
+      ? location
+      : null;
+  const editOwnPage = ownPage
+    ? () => {
+        getPageSource(ownPage.versionId)
+          .then((source) => {
+            saveDraft({
+              address: source.address,
+              title: source.title,
+              html: source.html,
+              authorId: source.authorId,
+            });
+          })
+          .catch(() => {
+            // Open the form anyway. The author can still write the page.
+          })
+          .finally(() => {
+            navigator.navigate({ kind: 'publish' });
+          });
+      }
+    : undefined;
+
   useEffect(() => {
     document.title =
       location?.kind === 'site' ? `${location.title} · Small Web` : 'Small Web';
@@ -61,6 +91,7 @@ export function BrowserApp() {
         onForward={navigator.goForward}
         onNavigate={navigator.navigate}
         onPersonChange={navigator.switchPerson}
+        onEdit={editOwnPage}
       />
 
       {failure ? (
@@ -93,6 +124,7 @@ export function BrowserApp() {
           <Viewport
             entry={entry}
             navigator={navigator}
+            people={people}
             personId={entry.ownerId}
             personName={person?.name}
             canGoBack={entryBehind(trail) !== null}

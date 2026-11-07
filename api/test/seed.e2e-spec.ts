@@ -34,6 +34,7 @@ describe('Seed (e2e)', () => {
       address,
       authorId: site.authorId,
       currentVersionId: site.currentVersionId,
+      versionNumber: site.versionNumber,
       title: site.title,
       text: site.text,
       createdAt: site.createdAt,

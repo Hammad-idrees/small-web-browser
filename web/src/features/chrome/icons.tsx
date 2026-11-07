@@ -40,6 +40,13 @@ export const SearchIcon = () => (
   </Icon>
 );
 
+export const PublishIcon = () => (
+  <Icon>
+    <path d="M12 20h8" />
+    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+  </Icon>
+);
+
 export const HistoryIcon = () => (
   <Icon>
     <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" />

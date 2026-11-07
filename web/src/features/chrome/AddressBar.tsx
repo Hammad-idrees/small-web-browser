@@ -11,6 +11,8 @@ interface AddressBarProps {
   readonly location: TrailLocation | undefined;
   readonly disabled: boolean;
   readonly onSubmit: (route: Route) => void;
+  /** Offered when the page shown is the current person's own. */
+  readonly onEdit?: () => void;
 }
 
 /**
@@ -22,6 +24,7 @@ export function AddressBar({
   location,
   disabled,
   onSubmit,
+  onEdit,
 }: AddressBarProps) {
   const input = useRef<HTMLInputElement>(null);
 
@@ -69,6 +72,11 @@ export function AddressBar({
       />
       {location?.kind === 'site' ? (
         <span className={styles.byline}>by {location.authorName}</span>
+      ) : null}
+      {onEdit ? (
+        <button type="button" className={styles.edit} onClick={onEdit}>
+          Edit
+        </button>
       ) : null}
     </form>
   );

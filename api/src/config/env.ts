@@ -10,6 +10,7 @@ const envSchema = z.object({
     .regex(/^mongodb(\+srv)?:\/\//, 'must be a mongodb:// connection string')
     .default('mongodb://127.0.0.1:27017/small_web'),
   WEB_ORIGIN: z.url().default('http://localhost:3000'),
+  PUBLISH_LIMIT_PER_MINUTE: z.coerce.number().int().min(1).default(20),
 });
 
 export type Env = z.infer<typeof envSchema>;

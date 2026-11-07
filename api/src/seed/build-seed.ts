@@ -43,6 +43,7 @@ export function buildSeed() {
     address: site.address,
     authorId: seedId('person', site.author),
     currentVersionId: seedId('version', `${site.address}:1`),
+    versionNumber: 1,
     title: site.title,
     text: extractText(site.html),
     createdAt: SITES_PUBLISHED_AT,

@@ -1,19 +1,24 @@
 'use client';
 
-import { normalizeAddress, type VisitVia } from '@small-web/contracts';
+import {
+  normalizeAddress,
+  type Person,
+  type VisitVia,
+} from '@small-web/contracts';
 import { useCallback } from 'react';
 import { HistoryPage } from '../history/HistoryPage';
+import { PublishPage } from '../publish/PublishPage';
 import { SearchPage } from '../search/SearchPage';
 import type { Navigator } from '../navigation/navigator';
 import type { TrailEntry } from '../navigation/trail';
 import { HomePage } from './HomePage';
 import { NowherePage } from './NowherePage';
 import { SiteFrame } from './SiteFrame';
-import { NotBuiltPage } from './StatusPages';
 
 interface ViewportProps {
   readonly entry: TrailEntry;
   readonly navigator: Navigator;
+  readonly people: readonly Person[];
   readonly personId: string;
   readonly personName: string | undefined;
   readonly canGoBack: boolean;
@@ -23,6 +28,7 @@ interface ViewportProps {
 export function Viewport({
   entry,
   navigator,
+  people,
   personId,
   personName,
   canGoBack,
@@ -64,6 +70,13 @@ export function Viewport({
       navigator.navigate({ kind: 'search', query });
     },
     [navigator],
+  );
+
+  const openPublished = useCallback(
+    (address: string) => {
+      open(address, 'publish');
+    },
+    [open],
   );
 
   const openFromHistory = useCallback(
@@ -130,6 +143,15 @@ export function Viewport({
         />
       );
     case 'publish':
-      return <NotBuiltPage name="Publish" />;
+      return (
+        <PublishPage
+          key={entry.id}
+          people={people}
+          personId={personId}
+          scrollY={entry.scrollY}
+          onScroll={reportScroll}
+          onPublished={openPublished}
+        />
+      );
   }
 }
