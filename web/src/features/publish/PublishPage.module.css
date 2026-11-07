@@ -1,183 +1,236 @@
+/*
+ * Publish: the shared white page banner, then the form and the rules on pure
+ * white, in the same cards and borders as History.
+ */
 .pane {
+  --ink: #0a0a0a;
+  --ink-soft: #4d4d4d;
+  --ink-faint: #7a7a7a;
+  --line: #e4e4e4;
+  --surface: #ffffff;
+  --accent: #0a7f43;
+  --on-accent: #ffffff;
+
   height: 100%;
   padding-top: var(--nav-space);
   overflow-y: auto;
-  background: var(--surface);
+  background: #ffffff;
   color: var(--ink);
 }
 
 .page {
-  max-width: 1040px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: clamp(32px, 7vh, 64px) 24px 56px;
-}
-
-.header {
-  max-width: 640px;
-  margin-bottom: 32px;
-}
-
-.eyebrow {
-  margin: 0 0 14px;
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.title {
-  margin: 0 0 12px;
-  font-family: var(--font-serif);
-  font-size: clamp(32px, 5vw, 46px);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  padding: clamp(32px, 4vw, 48px) 24px clamp(56px, 8vw, 96px);
 }
 
 .lede {
-  margin: 0;
+  max-width: 44em;
+  margin: 0 0 clamp(28px, 4vw, 40px);
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
   color: var(--ink-soft);
-  font-size: 15.5px;
+  font-size: 17px;
   line-height: 1.6;
 }
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px;
   align-items: start;
 }
+
+/* The form, in a white card with a firm edge. */
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 22px;
+  padding: clamp(24px, 3vw, 36px);
+  border: 1px solid #dcdcdc;
+  border-radius: 24px;
+  background: #ffffff;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .label {
-  color: var(--ink-soft);
+  color: var(--ink);
   font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .labelRow {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
+/* One height and one inner edge for every field, so text lines up down the form. */
 .input,
 .select {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  padding: 13px 18px;
+  border: 1px solid #d0d0d0;
+  border-radius: 14px;
   outline: 0;
-  background: var(--surface-raised);
+  background: #f7f7f7;
   color: var(--ink);
   font: inherit;
-  font-size: 15px;
+  font-size: 16px;
   transition:
-    border-color 120ms ease,
-    box-shadow 120ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
 
+/*
+ * The browser's own arrow sits hard against the edge, so it is replaced with a
+ * chevron placed as far in as the text is.
+ */
 .select {
-  height: 42px;
+  height: 52px;
+  padding-right: 48px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234d4d4d' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 18px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  cursor: pointer;
+}
+
+.input::placeholder {
+  color: #9a9a9a;
+}
+
+.input:hover,
+.select:hover {
+  border-color: #a8a8a8;
+}
+
+/* Focused: white, black edge, like a hovered card. */
+.input:not(.textarea),
+.select {
+  height: 52px;
 }
 
 .input:focus,
 .select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: #0a0a0a;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px #0a0a0a;
 }
 
 .input[aria-invalid='true'] {
-  border-color: var(--alert-line);
+  border-color: #c2412d;
+  background: #fff8f6;
+  box-shadow: 0 0 0 1px #c2412d;
 }
 
 .mono {
   font-family: var(--font-mono);
-  font-size: 13.5px;
+  font-size: 14.5px;
 }
 
 .textarea {
-  min-height: 320px;
+  min-height: 340px;
   resize: vertical;
-  line-height: 1.55;
+  line-height: 1.6;
   tab-size: 2;
 }
 
+/* "Start from an example": an outlined pill, like the labels elsewhere. */
 .example {
-  padding: 0;
-  border: 0;
-  background: none;
+  padding: 6px 14px;
+  border: 1px solid rgb(10 127 67 / 45%);
+  border-radius: 999px;
+  background: #ffffff;
   color: var(--accent);
   font: inherit;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .example:hover {
-  text-decoration: underline;
+  border-color: var(--accent);
+  background: rgb(10 127 67 / 6%);
 }
 
 .fieldError {
-  color: #b4472e;
-  font-size: 13px;
+  color: #c2412d;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .failure {
   margin: 0;
-  padding: 10px 14px;
-  border: 1px solid var(--alert-line);
-  border-radius: 10px;
-  background: var(--alert-surface);
-  font-size: 14px;
+  padding: 14px 18px;
+  border: 1px solid #f0c4b8;
+  border-left: 4px solid #c2412d;
+  border-radius: 14px;
+  background: #fff8f6;
+  color: #7a2817;
+  font-size: 15px;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
+
+  /* Room for the button's slanted corner, so it stays inside the card. */
+  padding: 22px 10px 0 0;
+  border-top: 1px solid var(--line);
 }
 
+/* The rules, in a grey card beside the form. */
+
 .rules {
+  /* Counted from inside the pane's top padding, which already clears the navbar. */
   position: sticky;
-  top: calc(var(--nav-space) + 8px);
-  padding: 20px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-raised);
-  font-size: 14px;
+  top: 16px;
+  padding: 28px;
+  border: 1px solid #dcdcdc;
+  border-radius: 24px;
+  background: #f7f7f7;
+  font-size: 15px;
   line-height: 1.5;
 }
 
 .rulesTitle {
-  margin: 0 0 6px;
-  font-family: var(--font-serif);
-  font-size: 19px;
-  font-weight: 400;
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
 .rulesLede {
-  margin: 0 0 14px;
+  margin: 0 0 22px;
   color: var(--ink-soft);
 }
 
 .rulesHeading {
-  margin: 14px 0 6px;
-  color: var(--ink-faint);
+  display: inline-flex;
+  margin: 0 0 12px;
+  padding: 5px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink-soft);
   font-size: 11.5px;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -185,41 +238,61 @@
 .removed {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin: 0;
+  gap: 10px;
+  margin: 0 0 22px;
   padding: 0;
   list-style: none;
+}
+
+.removed {
+  margin-bottom: 0;
 }
 
 .kept li,
 .removed li {
   position: relative;
-  padding-left: 18px;
+  padding-left: 32px;
+  color: var(--ink);
 }
 
+/* A small round marker: a tick for kept, a cross for removed. */
 .kept li::before,
 .removed li::before {
   position: absolute;
+  top: 1px;
   left: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
   font-weight: 700;
+  line-height: 1;
 }
 
 .kept li::before {
-  content: '+';
-  color: var(--accent);
+  content: '✓';
+  background: var(--accent);
+  color: #ffffff;
 }
 
 .removed li::before {
-  content: '–';
-  color: #b4472e;
+  content: '✕';
+  border: 1.5px solid #c2412d;
+  color: #c2412d;
 }
 
 .rules code {
+  padding: 1px 5px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #ffffff;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
   }

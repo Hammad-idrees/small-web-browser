@@ -1,159 +1,443 @@
+/*
+ * History: the shared white page banner, then a timeline of visits on pure white.
+ * Tokens are pinned so the page looks the same in any theme.
+ */
 .pane {
+  --ink: #0a0a0a;
+  --ink-soft: #4d4d4d;
+  --ink-faint: #7a7a7a;
+  --line: #e4e4e4;
+  --surface: #ffffff;
+  --accent: #0a7f43;
+  --on-accent: #ffffff;
+
   height: 100%;
   padding-top: var(--nav-space);
   overflow-y: auto;
-  background: var(--surface);
+  background: #ffffff;
   color: var(--ink);
 }
 
-.page {
-  max-width: 760px;
+.inner {
+  max-width: 1160px;
   margin: 0 auto;
-  padding: clamp(32px, 7vh, 64px) 24px 48px;
 }
 
-.header {
-  margin-bottom: 36px;
+.body {
+  padding: clamp(32px, 4vw, 48px) 24px clamp(56px, 8vw, 96px);
+  background: #ffffff;
 }
 
-.eyebrow {
-  margin: 0 0 14px;
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+/* What this page is, and the key to the dots. */
 
-.title {
-  margin: 0 0 12px;
-  font-family: var(--font-serif);
-  font-size: clamp(32px, 5vw, 46px);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
 }
 
 .lede {
-  max-width: 52ch;
+  max-width: 36em;
   margin: 0;
   color: var(--ink-soft);
-  font-size: 15.5px;
+  font-size: 17px;
   line-height: 1.6;
 }
 
-.day + .day {
-  margin-top: 28px;
-}
-
-.dayLabel {
-  position: sticky;
-  z-index: 1;
-  top: var(--nav-space);
-  margin: 0;
-  padding: 10px 0 8px;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--ink-soft);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.list {
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.row {
-  display: grid;
-  grid-template-columns: 76px minmax(0, 1fr) auto;
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border: 1px solid #d4d4d4;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.legend .markerFound,
+.legend .markerDead {
+  width: 10px;
+  height: 10px;
+  box-shadow: none;
+}
+
+/* Days */
+
+.day {
+  margin-top: 36px;
+}
+
+/*
+ * Sticks just below the navbar. The pane's top padding already clears the navbar,
+ * and sticky offsets count from inside that padding, so this is 0, not --nav-space.
+ * The white shadow above covers the strip between it and the navbar.
+ */
+.dayHead {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: center;
   gap: 16px;
-  align-items: baseline;
+  padding: 16px 0;
+  background: #ffffff;
+  box-shadow: 0 -24px 0 #ffffff;
+}
+
+/* Both set to line-height 1, so the heading and the pill centre on each other. */
+.dayLabel {
+  margin: 0;
+  font-size: clamp(30px, 3vw, 38px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.dayCount {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgb(10 127 67 / 45%);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+
+  /*
+   * Centred on the box, the pill still looks high: "Today" is mostly lowercase,
+   * so the eye reads the word's middle a few pixels below the capitals' middle.
+   */
+  position: relative;
+  top: 3px;
+}
+
+/* Timeline: time, a dot on a line, then the visit's card. */
+
+.timeline,
+.entry {
+  --time-width: 92px;
+}
+
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 6px 0 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 30px;
+  left: calc(var(--time-width) + 22px);
+  width: 1px;
+  background: var(--line);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: var(--time-width) 44px minmax(0, 1fr);
+  align-items: center;
+}
+
+.time {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.markerFound,
+.markerDead {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/*
+ * Flat and crisp: a solid green dot for a page found, an empty dashed ring for
+ * nowhere. The white ring only parts them from the timeline's line.
+ */
+.markerFound {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+.markerDead {
+  border: 1.5px dashed #7a7a7a;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
   width: 100%;
-  padding: 12px 10px;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
+  min-height: 86px;
+  padding: 16px 16px 16px 26px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
+  background: #f7f7f7;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 120ms ease;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 260ms ease,
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.row:hover {
-  background: var(--surface-sunken);
+.card:hover,
+.card:focus-visible {
+  border-color: #0a0a0a;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px #0a0a0a,
+    0 18px 36px -22px rgb(0 0 0 / 35%);
+  transform: translateX(4px);
 }
 
-.time {
-  color: var(--ink-faint);
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* A visit that found nothing: dashed, white, and quieter. */
+.cardDead {
+  border-style: dashed;
+  border-color: #c4c4c4;
+  background: #ffffff;
 }
 
 .what {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px 12px;
-  align-items: baseline;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
   min-width: 0;
 }
 
-.rowTitle,
-.rowTitleDead {
-  font-family: var(--font-serif);
-  font-size: 17px;
+.cardTitle {
+  overflow: hidden;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.rowTitleDead {
+.cardDead .cardTitle {
   color: var(--ink-faint);
   font-style: italic;
+  font-weight: 500;
 }
 
 .address {
   overflow: hidden;
   color: var(--accent);
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 14px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.via {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--surface-sunken);
+.cardDead .address {
   color: var(--ink-soft);
-  font-size: 11.5px;
+  text-decoration: line-through;
+  text-decoration-color: #b0b0b0;
+}
+
+.via {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #d0d0d0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 500;
   white-space: nowrap;
 }
+
+.via svg,
+.go svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.go {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #0a0a0a;
+  color: #ffffff;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.go svg {
+  width: 17px;
+  height: 17px;
+}
+
+.card:hover .go,
+.card:focus-visible .go {
+  background: var(--neon);
+  color: var(--on-neon);
+  transform: rotate(45deg);
+}
+
+/* Footer */
 
 .footer {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  gap: 10px 16px;
   align-items: center;
   justify-content: center;
-  min-height: 72px;
-  padding-top: 24px;
+  min-height: 96px;
+  padding-top: 36px;
   color: var(--ink-faint);
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
 }
 
+.loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.end {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.end::before,
+.end::after {
+  content: '';
+  width: 48px;
+  height: 1px;
+  background: var(--line);
+}
+
+.empty {
+  max-width: 28em;
+  padding: 28px 32px;
+  border: 1px dashed #c4c4c4;
+  border-radius: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 @media (max-width: 640px) {
-  .row {
-    grid-template-columns: 70px minmax(0, 1fr);
-    gap: 4px 12px;
+  .timeline,
+  .entry {
+    --time-width: 60px;
   }
 
-  .via {
-    grid-column: 2;
-    justify-self: start;
+  .entry {
+    grid-template-columns: var(--time-width) 30px minmax(0, 1fr);
+  }
+
+  .timeline::before {
+    left: calc(var(--time-width) + 15px);
+  }
+
+  .time {
+    font-size: 12px;
+  }
+
+  .card {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+
+  .what {
+    flex-basis: 100%;
+  }
+
+  .go {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .go {
+    transition: none;
+  }
+
+  .spinner {
+    animation-duration: 2.4s;
   }
 }

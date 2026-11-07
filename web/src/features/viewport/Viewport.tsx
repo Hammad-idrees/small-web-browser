@@ -58,6 +58,10 @@ export function Viewport({
     [open],
   );
 
+  const openHome = useCallback(() => {
+    navigator.navigate({ kind: 'home' });
+  }, [navigator]);
+
   const openPublish = useCallback(() => {
     navigator.navigate({ kind: 'publish' });
   }, [navigator]);
@@ -150,6 +154,7 @@ export function Viewport({
           scrollY={entry.scrollY}
           onScroll={reportScroll}
           onOpen={openFromHistory}
+          onHome={openHome}
         />
       );
     case 'publish':
@@ -161,6 +166,7 @@ export function Viewport({
           scrollY={entry.scrollY}
           onScroll={reportScroll}
           onPublished={openPublished}
+          onHome={openHome}
         />
       );
   }

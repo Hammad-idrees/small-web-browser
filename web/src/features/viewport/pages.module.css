@@ -153,13 +153,15 @@
 .lineBright {
   display: inline-flex;
   align-items: center;
-  gap: 0.22em;
+  gap: 0.2em;
   color: var(--chrome-ink);
 }
 
 .glyph {
-  width: 0.82em;
-  height: 0.82em;
+  /* About the height of the lowercase letters, so it sits in the line like a word. */
+  width: 0.68em;
+  height: 0.68em;
+  margin-top: 0.16em;
   color: var(--neon);
   filter: drop-shadow(0 0 14px rgb(61 252 143 / 55%));
   animation: breathe 4s ease-in-out infinite;

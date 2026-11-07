@@ -22,8 +22,16 @@ export const publishSchema = z.strictObject({
     .refine((value) => publishableAddress(value) !== null, {
       message: `Must be an address ending in ${PUBLISHABLE_SUFFIX}, like yourname${PUBLISHABLE_SUFFIX}`,
     }),
-  title: z.string().trim().min(1).max(MAX_TITLE),
-  html: z.string().trim().min(1).max(MAX_PAGE_HTML),
+  title: z
+    .string()
+    .trim()
+    .min(1, { message: 'Give the page a title' })
+    .max(MAX_TITLE, { message: `Keep the title under ${String(MAX_TITLE)} characters` }),
+  html: z
+    .string()
+    .trim()
+    .min(1, { message: 'Write something for the page' })
+    .max(MAX_PAGE_HTML, { message: 'That page is too long to publish' }),
   authorId: objectIdSchema,
 });
 

@@ -36,28 +36,34 @@
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 0 22px;
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* A heading on its own, label above it. */
+.headerStacked {
+  margin-bottom: clamp(40px, 5vw, 64px);
 }
 
-.eyebrow::before {
-  content: '';
-  width: 28px;
-  height: 1px;
-  background: currentColor;
+/* An outlined green pill, spaced capitals. */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 24px;
+  padding: 9px 22px;
+  border: 1px solid rgb(10 127 67 / 45%);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .heading {
   margin: 0;
-  font-size: clamp(40px, 5.4vw, 68px);
+  font-size: clamp(34px, 4.6vw, 60px);
+
+  /* On a narrow screen it wraps into even lines, never one word left alone. */
+  text-wrap: balance;
   font-weight: 500;
   letter-spacing: -0.045em;
   line-height: 1;
@@ -92,14 +98,18 @@
   padding: 28px 30px 26px;
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid var(--line);
+
+  /* Off-white with a firm edge, so each card stands apart from the white page. */
+  border: 1px solid #dcdcdc;
   border-radius: 28px;
-  background: #ffffff;
+  background: #f7f7f7;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
   transition:
+    background-color 220ms ease,
     border-color 220ms ease,
     box-shadow 320ms ease,
     transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -117,12 +127,14 @@
   transition: right 0.5s ease;
 }
 
+/* Hovered: turns white with a solid black edge, lifts, and casts a shadow. */
 .card:hover,
 .card:focus-visible {
-  border-color: #d4d4d4;
+  border-color: #0a0a0a;
+  background: #ffffff;
   box-shadow:
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 28px 56px -28px rgb(0 0 0 / 28%);
+    0 0 0 1px #0a0a0a,
+    0 30px 60px -28px rgb(0 0 0 / 35%);
   transform: translateY(-6px);
 }
 
@@ -143,7 +155,7 @@
   right: -70px;
   width: 240px;
   height: 240px;
-  stroke: #ededed;
+  stroke: #e2e2e2;
   stroke-width: 1;
   transition:
     stroke 320ms ease,
@@ -169,8 +181,9 @@
 
 .topic {
   padding: 5px 12px;
-  border: 1px solid var(--line);
+  border: 1px solid #d4d4d4;
   border-radius: 999px;
+  background: #ffffff;
   color: var(--ink-soft);
   font-size: 12.5px;
   font-weight: 500;
@@ -222,7 +235,7 @@
   justify-content: space-between;
   gap: 16px;
   padding-top: 20px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #e0e0e0;
 }
 
 .author {

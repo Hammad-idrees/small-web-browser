@@ -6,8 +6,15 @@ import {
   type Person,
   publishSchema,
 } from '@small-web/contracts';
-import { type SubmitEvent, useEffect, useRef, useState } from 'react';
+import {
+  type SubmitEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import { Button } from '@/components/Button';
+import { PageBanner } from '@/components/PageBanner';
 import { ApiRequestError, publishPage } from '@/lib/api-client';
 import {
   clearDraft,
@@ -36,6 +43,7 @@ interface PublishPageProps {
   readonly scrollY: number;
   readonly onScroll: (y: number) => void;
   readonly onPublished: (address: string) => void;
+  readonly onHome: () => void;
 }
 
 export function PublishPage({
@@ -44,7 +52,9 @@ export function PublishPage({
   scrollY,
   onScroll,
   onPublished,
+  onHome,
 }: PublishPageProps) {
+  const htmlFieldId = useId();
   const form = useRef<HTMLFormElement>(null);
   const pane = useRef<HTMLDivElement>(null);
   const [draft] = useState<PublishDraft | null>(loadDraft);
@@ -122,16 +132,19 @@ export function PublishPage({
 
   return (
     <div className={styles.pane} ref={pane} onScroll={reportScroll}>
+      <PageBanner
+        title="Publish"
+        subtitle="Put a page on the small web"
+        crumb="Publish"
+        onHome={onHome}
+      />
+
       <div className={styles.page}>
-        <header className={styles.header}>
-          <p className={styles.eyebrow}>Publish</p>
-          <h1 className={styles.title}>Put a page on the small web</h1>
-          <p className={styles.lede}>
-            Choose an address, write a page of HTML, and it is live the moment
-            you publish. Publishing again at an address of your own adds a new
-            version. Anyone who was reading the old one still has it.
-          </p>
-        </header>
+        <p className={styles.lede}>
+          Choose an address, write a page of HTML, and it is live the moment you
+          publish. Publishing again at an address of your own adds a new
+          version. Anyone who was reading the old one still has it.
+        </p>
 
         <div className={styles.layout}>
           <form
@@ -192,9 +205,15 @@ export function PublishPage({
               <FieldError message={errors.title} />
             </label>
 
-            <label className={styles.field}>
+            {/*
+              Not wrapped in a <label>: a button inside one would be named "Page",
+              and the box would lose its label. The label points at the box instead.
+            */}
+            <div className={styles.field}>
               <span className={styles.labelRow}>
-                <span className={styles.label}>Page</span>
+                <label htmlFor={htmlFieldId} className={styles.label}>
+                  Page
+                </label>
                 <button
                   type="button"
                   className={styles.example}
@@ -204,6 +223,7 @@ export function PublishPage({
                 </button>
               </span>
               <textarea
+                id={htmlFieldId}
                 name="html"
                 className={`${styles.input} ${styles.mono} ${styles.textarea}`}
                 defaultValue={draft?.html ?? ''}
@@ -213,7 +233,7 @@ export function PublishPage({
                 aria-invalid={errors.html ? true : undefined}
               />
               <FieldError message={errors.html} />
-            </label>
+            </div>
 
             {failure ? (
               <p className={styles.failure} role="alert">

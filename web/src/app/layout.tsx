@@ -7,6 +7,7 @@ import './globals.css';
 const display = Inter_Tight({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-display-face',
   display: 'swap',
 });

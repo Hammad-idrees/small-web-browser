@@ -57,20 +57,11 @@ export function HomeSections({ onOpen, onPublish }: HomeSectionsProps) {
   return (
     <div className={styles.sections}>
       <section className={styles.section} aria-labelledby="places-to-begin">
-        <header className={styles.header}>
-          <div>
-            <p className={styles.eyebrow}>Places to begin</p>
-            <h2 id="places-to-begin" className={styles.heading}>
-              Four doors into
-              <br />
-              the small web.
-            </h2>
-          </div>
-          <p className={styles.intro}>
-            Each one is a single page, written by one person. Open any of them
-            and follow where its links lead. Most go somewhere; a few go
-            nowhere at all.
-          </p>
+        <header className={styles.headerStacked}>
+          <p className={styles.eyebrow}>Places to begin</p>
+          <h2 id="places-to-begin" className={styles.heading}>
+            Four doors into the small web.
+          </h2>
         </header>
 
         <ul className={styles.cards}>

@@ -1,0 +1,165 @@
+/*
+ * An inner page's header: pure white, faint column lines, a poster-sized title,
+ * and a slowly turning gear. It reaches up behind the floating navbar.
+ */
+.banner {
+  position: relative;
+  margin-top: calc(-1 * var(--nav-space));
+  padding: calc(var(--nav-space) + clamp(28px, 5vh, 56px)) 24px clamp(36px, 5vh, 52px);
+  overflow: hidden;
+  isolation: isolate;
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
+/* Four faint vertical lines, like a layout grid showing through. */
+.grid {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1280px;
+  margin: 0 auto;
+  pointer-events: none;
+}
+
+.grid span {
+  border-left: 1px solid #f0f0f0;
+}
+
+.grid span:last-child {
+  border-right: 1px solid #f0f0f0;
+}
+
+.inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.words {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin: clamp(10px, 1.5vw, 18px) 0 0;
+  overflow: hidden;
+  color: #8a8a8a;
+  font-size: clamp(24px, 3.2vw, 42px);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+
+  /*
+   * Room below the letters: with overflow hidden (for the ellipsis), a tight line
+   * clips the tails of g, p and y.
+   */
+  line-height: 1.25;
+  padding-bottom: 0.06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.gear {
+  width: clamp(84px, 8.5vw, 120px);
+  height: auto;
+  opacity: 0.85;
+  animation: turn 24s linear infinite;
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #0a0a0a;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.crumbHome {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #8a8a8a;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.crumbHome:hover {
+  color: #0a7f43;
+}
+
+.crumbSep {
+  color: #c4c4c4;
+}
+
+/* The neon rule along the bottom edge. */
+.bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 8px;
+  background: var(--neon);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .side {
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .gear {
+    width: 60px;
+  }
+
+  .crumbs {
+    font-size: 11.5px;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gear {
+    animation: none;
+  }
+}

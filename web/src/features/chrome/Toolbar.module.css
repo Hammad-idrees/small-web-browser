@@ -81,22 +81,20 @@
   border-radius: 12px;
 }
 
-/* The mark sits on a neon tile, dark on green. */
+/* The mark on its own: neon rings, no tile behind them. */
 .logoMark {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: var(--neon);
-  color: var(--on-neon);
-  box-shadow: 0 0 18px -4px var(--neon-glow);
-  transition: box-shadow 160ms ease;
+  width: 32px;
+  height: 32px;
+  color: var(--neon);
+  filter: drop-shadow(0 0 6px rgb(61 252 143 / 45%));
+  transition: filter 160ms ease;
 }
 
 .logoMark svg {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
 }
 
 .wordmark {
@@ -107,7 +105,7 @@
 }
 
 .logo:hover:not(:disabled) .logoMark {
-  box-shadow: 0 0 22px -2px rgb(61 252 143 / 45%);
+  filter: drop-shadow(0 0 10px rgb(61 252 143 / 75%));
 }
 
 .iconButton:hover:not(:disabled) {
