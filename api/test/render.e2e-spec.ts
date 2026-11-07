@@ -43,6 +43,32 @@ describe('Resolving and rendering (e2e)', () => {
     await app.close();
   });
 
+  describe('security headers', () => {
+    it('locks down JSON responses and does not say what serves them', async () => {
+      const { headers } = await request(server()).get('/api/people').expect(200);
+      expect(headers['x-powered-by']).toBeUndefined();
+      expect(headers['x-content-type-options']).toBe('nosniff');
+      expect(headers['content-security-policy']).toBe(
+        "default-src 'none';frame-ancestors 'none'",
+      );
+      expect(headers['strict-transport-security']).toBeDefined();
+    });
+
+    it('lets the contained document keep its own policy, framed only by the web app', async () => {
+      const id = await versionIdOf('tidepool.zz');
+      const { headers } = await request(server())
+        .get(`/render/versions/${id}`)
+        .expect(200);
+      expect(headers['x-frame-options']).toBeUndefined();
+      expect(headers['content-security-policy']).toContain(
+        'sandbox allow-scripts',
+      );
+      expect(headers['content-security-policy']).toContain(
+        'frame-ancestors http://localhost:3000',
+      );
+    });
+  });
+
   describe('GET /api/people', () => {
     it('lists everyone by name, in a stable order', async () => {
       const response = await request(server()).get('/api/people').expect(200);

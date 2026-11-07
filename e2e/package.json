@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "0.0.1",
+  "description": "Browser tests: the built app and API, driven in Chromium",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@small-web/contracts": "workspace:*",
+    "@types/node": "^24.0.0",
+    "typescript": "^6.0.3"
+  }
+}
