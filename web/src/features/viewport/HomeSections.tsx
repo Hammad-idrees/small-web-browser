@@ -51,6 +51,31 @@ const STEPS = [
   },
 ] as const;
 
+/** The picture at the top of each step: a miniature of that part of the app. */
+const STEP_PREVIEWS = [
+  // 1. The address bar, being typed into.
+  <span key="type" className={styles.miniBar}>
+    <span className={styles.miniDot} />
+    <span className={styles.miniTyped}>tidepool.zz</span>
+    <span className={styles.caret} />
+  </span>,
+  // 2. A chain of links, the last one leading nowhere.
+  <span key="follow" className={styles.chain}>
+    <span className={styles.chip}>tidepool.zz</span>
+    <span className={styles.chainArrow}>→</span>
+    <span className={styles.chip}>harbourlight.zz</span>
+    <span className={styles.chainArrow}>→</span>
+    <span className={`${styles.chip} ${styles.chipDead}`}>lost-boat.zz</span>
+  </span>,
+  // 3. A new address, and the Publish button.
+  <span key="publish" className={styles.publishRow}>
+    <span className={styles.chip}>driftwood.zz</span>
+    <span className={styles.miniPublish}>
+      <span>Publish ↗</span>
+    </span>
+  </span>,
+];
+
 interface HomeSectionsProps {
   readonly onOpen: (address: string) => void;
   readonly onPublish: () => void;
@@ -118,11 +143,17 @@ export function HomeSections({ onOpen, onPublish }: HomeSectionsProps) {
         <ol className={styles.steps}>
           {STEPS.map((step, index) => (
             <li key={step.title} className={styles.step}>
-              <span className={styles.stepNumber}>
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <h3 className={styles.stepTitle}>{step.title}</h3>
-              <p className={styles.stepText}>{step.text}</p>
+              {/* A small picture of the step, drawn in the app's own style. */}
+              <div className={styles.preview} aria-hidden="true">
+                {STEP_PREVIEWS[index]}
+              </div>
+              <div className={styles.stepBody}>
+                <span className={styles.stepNumber}>
+                  Step {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className={styles.stepTitle}>{step.title}</h3>
+                <p className={styles.stepText}>{step.text}</p>
+              </div>
             </li>
           ))}
         </ol>
