@@ -16,7 +16,7 @@ function Run({ hidden }: { readonly hidden?: boolean }) {
           <span className={styles.dot} aria-hidden="true" />
           <span className={styles.soft}>{soft}</span>
           <span className={styles.slashes} aria-hidden="true">
-            //
+            {'//'}
           </span>
         </li>
       ))}
