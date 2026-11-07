@@ -1,8 +1,9 @@
 'use client';
 
 import type { Visit, VisitVia } from '@small-web/contracts';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import { listVisits } from '@/lib/api-client';
+import { useRestoringPager } from '../viewport/useRestoringPager';
 import styles from './HistoryPage.module.css';
 
 const VIA_LABELS: Record<VisitVia, string> = {
@@ -14,8 +15,6 @@ const VIA_LABELS: Record<VisitVia, string> = {
   direct: 'Opened directly',
 };
 
-const SCROLL_REPORT_MS = 100;
-
 interface HistoryPageProps {
   readonly personId: string;
   readonly personName: string | undefined;
@@ -25,13 +24,7 @@ interface HistoryPageProps {
   readonly onOpen: (address: string) => void;
 }
 
-type LoadState = 'loading' | 'idle' | 'error';
-
-/**
- * Everywhere one person has been, newest first, loaded a page at a time as they
- * scroll. Returning here puts the list back where it was left, loading as many pages
- * as it takes to get there.
- */
+/** Everywhere one person has been, newest first, a page at a time. */
 export function HistoryPage({
   personId,
   personName,
@@ -39,100 +32,25 @@ export function HistoryPage({
   onScroll,
   onOpen,
 }: HistoryPageProps) {
-  const pane = useRef<HTMLDivElement>(null);
-  const sentinel = useRef<HTMLDivElement>(null);
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [cursor, setCursor] = useState<string | null>(null);
-  const [complete, setComplete] = useState(false);
-  const [state, setState] = useState<LoadState>('loading');
-  const [initialScroll] = useState(scrollY);
-
-  const loading = useRef(false);
-  const restored = useRef(initialScroll === 0);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const loadMore = useCallback(() => {
-    if (loading.current || complete) return;
-    loading.current = true;
-    setState('loading');
-
-    listVisits(personId, cursor)
-      .then((page) => {
-        setVisits((shown) => [...shown, ...page.visits]);
-        setCursor(page.nextCursor);
-        setComplete(page.nextCursor === null);
-        setState('idle');
-      })
-      .catch(() => {
-        setState('error');
-      })
-      .finally(() => {
-        loading.current = false;
-      });
-  }, [personId, cursor, complete]);
-
-  // The first page.
-  const started = useRef(false);
-  useEffect(() => {
-    if (started.current) return;
-    started.current = true;
-    loadMore();
-  }, [loadMore]);
-
-  // Returning: keep loading until the old position exists, then go there.
-  useEffect(() => {
-    const element = pane.current;
-    if (restored.current || !element || state !== 'idle') return;
-
-    const reachable =
-      element.scrollHeight >= initialScroll + element.clientHeight;
-    if (reachable || complete) {
-      element.scrollTop = initialScroll;
-      restored.current = true;
-    } else {
-      loadMore();
-    }
-  }, [visits, state, complete, initialScroll, loadMore]);
-
-  // Scrolling near the end loads the next page.
-  useEffect(() => {
-    const element = pane.current;
-    const end = sentinel.current;
-    if (!element || !end || complete) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting) && restored.current) {
-          loadMore();
-        }
-      },
-      { root: element, rootMargin: '600px 0px' },
-    );
-    observer.observe(end);
-    return () => {
-      observer.disconnect();
-    };
-  }, [complete, loadMore]);
-
-  useEffect(
-    () => () => {
-      if (scrollTimer.current) clearTimeout(scrollTimer.current);
+  const fetchPage = useCallback(
+    async (cursor: string | null) => {
+      const page = await listVisits(personId, cursor);
+      return { items: page.visits, next: page.nextCursor };
     },
-    [],
+    [personId],
   );
 
-  const reportScroll = () => {
-    if (!restored.current || scrollTimer.current !== null) return;
-    scrollTimer.current = setTimeout(() => {
-      scrollTimer.current = null;
-      if (pane.current) onScroll(Math.round(pane.current.scrollTop));
-    }, SCROLL_REPORT_MS);
-  };
+  const { pane, sentinel, items, state, complete, loadMore, handleScroll } =
+    useRestoringPager<Visit, string>({
+      fetchPage,
+      initialScroll: scrollY,
+      onScroll,
+    });
 
-  const days = groupByDay(visits);
+  const days = groupByDay(items);
 
   return (
-    <div className={styles.pane} ref={pane} onScroll={reportScroll}>
+    <div className={styles.pane} ref={pane} onScroll={handleScroll}>
       <div className={styles.page}>
         <header className={styles.header}>
           <p className={styles.eyebrow}>History</p>
@@ -145,11 +63,11 @@ export function HistoryPage({
           </p>
         </header>
 
-        {days.map(({ label, visits: dayVisits }) => (
+        {days.map(({ label, visits }) => (
           <section key={label} className={styles.day}>
             <h2 className={styles.dayLabel}>{label}</h2>
             <ol className={styles.list}>
-              {dayVisits.map((visit) => (
+              {visits.map((visit) => (
                 <li key={visit.id}>
                   <button
                     type="button"
@@ -191,7 +109,7 @@ export function HistoryPage({
                 Try again
               </button>
             </>
-          ) : complete && visits.length === 0 ? (
+          ) : complete && items.length === 0 ? (
             <span>
               Nothing here yet. Everywhere {personName ?? 'you'} goes will be
               written down here.

@@ -2,6 +2,8 @@ import {
   type Person,
   personSchema,
   type RecordVisit,
+  type SearchPage,
+  searchPageSchema,
   type SiteSummary,
   siteSummarySchema,
   type VisitPage,
@@ -75,6 +77,21 @@ export async function listVisits(
   );
   if (!response.ok) throw new Error(`History: ${response.status}`);
   return visitPageSchema.parse(await response.json());
+}
+
+/** Pages that mention the query, best first. */
+export async function searchSites(
+  query: string,
+  offset: number,
+): Promise<SearchPage> {
+  const params = new URLSearchParams({
+    q: query,
+    offset: String(offset),
+    limit: '20',
+  });
+  const response = await fetch(`${API_URL}/api/search?${params.toString()}`);
+  if (!response.ok) throw new Error(`Search: ${response.status}`);
+  return searchPageSchema.parse(await response.json());
 }
 
 /** Where a contained page is served from. */

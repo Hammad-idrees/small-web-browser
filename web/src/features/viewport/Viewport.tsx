@@ -3,6 +3,7 @@
 import { normalizeAddress, type VisitVia } from '@small-web/contracts';
 import { useCallback } from 'react';
 import { HistoryPage } from '../history/HistoryPage';
+import { SearchPage } from '../search/SearchPage';
 import type { Navigator } from '../navigation/navigator';
 import type { TrailEntry } from '../navigation/trail';
 import { HomePage } from './HomePage';
@@ -51,6 +52,20 @@ export function Viewport({
     [open],
   );
 
+  const openFromSearch = useCallback(
+    (address: string) => {
+      open(address, 'search');
+    },
+    [open],
+  );
+
+  const search = useCallback(
+    (query: string) => {
+      navigator.navigate({ kind: 'search', query });
+    },
+    [navigator],
+  );
+
   const openFromHistory = useCallback(
     (address: string) => {
       open(address, 'history');
@@ -93,7 +108,16 @@ export function Viewport({
     case 'home':
       return <HomePage personName={personName} onOpen={openFromStartPage} />;
     case 'search':
-      return <NotBuiltPage name="Search" />;
+      return (
+        <SearchPage
+          key={entry.id}
+          query={location.query}
+          scrollY={entry.scrollY}
+          onScroll={reportScroll}
+          onOpen={openFromSearch}
+          onSearch={search}
+        />
+      );
     case 'history':
       return (
         <HistoryPage
