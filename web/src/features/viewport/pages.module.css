@@ -1,5 +1,6 @@
 .page {
   height: 100%;
+  padding-top: var(--nav-space);
   overflow-y: auto;
   background: var(--surface);
   color: var(--ink);
@@ -13,8 +14,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: max(560px, 100%);
-  padding: 72px 24px 88px;
+
+  /* Reaches up behind the navbar, so the glass has the hero to show through. */
+  min-height: max(600px, calc(100% + var(--nav-space)));
+  margin-top: calc(-1 * var(--nav-space));
+  padding: calc(var(--nav-space) + 40px) 24px 88px;
   overflow: hidden;
   isolation: isolate;
   background: var(--chrome);
@@ -46,6 +50,56 @@
   background: radial-gradient(closest-side, rgb(61 252 143 / 16%), transparent);
   transform: translateX(-50%);
   pointer-events: none;
+}
+
+/* The emerald knots: behind the words, half out of frame, slowly drifting. */
+.knot {
+  position: absolute;
+  z-index: -1;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 48px rgb(61 252 143 / 22%));
+  will-change: transform;
+}
+
+.knotLead {
+  top: 12%;
+  left: -110px;
+  width: clamp(180px, 19vw, 300px);
+  opacity: 0.8;
+  animation: drift 11s ease-in-out infinite;
+}
+
+.knotEcho {
+  right: -70px;
+  bottom: 6%;
+  width: clamp(150px, 16vw, 250px);
+  opacity: 0.75;
+  filter: drop-shadow(0 0 36px rgb(61 252 143 / 18%)) blur(0.5px);
+  animation: drift-echo 13s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate3d(10px, -18px, 0) rotate(8deg);
+  }
+}
+
+@keyframes drift-echo {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(150deg);
+  }
+
+  50% {
+    transform: translate3d(-12px, 14px, 0) rotate(138deg);
+  }
 }
 
 .chip {
@@ -138,121 +192,9 @@
   margin-top: 40px;
 }
 
-.cta {
-  height: 50px;
-  padding: 0 26px;
-  border: 1px solid rgb(61 252 143 / 45%);
-  border-radius: 12px;
-  background: #0a0a0a;
-  color: var(--chrome-ink);
-  font: inherit;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow:
-    0 0 0 1px rgb(61 252 143 / 8%),
-    0 0 28px -4px rgb(61 252 143 / 35%),
-    inset 0 0 16px rgb(61 252 143 / 8%);
-  transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.cta:hover {
-  border-color: var(--neon);
-  box-shadow:
-    0 0 0 1px rgb(61 252 143 / 20%),
-    0 0 40px -2px rgb(61 252 143 / 50%),
-    inset 0 0 20px rgb(61 252 143 / 12%);
-  transform: translateY(-1px);
-}
-
-.cta:focus-visible {
-  outline-color: var(--neon);
-}
-
-/* Start page: places to begin, on white. */
-
-.begin {
-  --ink: #0a0a0a;
-  --ink-soft: #525252;
-  --line: #e5e5e5;
-  --surface-raised: #ffffff;
-  --accent: #0a7f43;
-  --shadow: rgb(0 0 0 / 22%);
-
-  padding: 72px 24px 88px;
-  background: #ffffff;
-  color: var(--ink);
-  color-scheme: light;
-}
-
-.beginInner {
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-.beginTitle {
-  margin: 0 0 28px;
-  font-size: clamp(28px, 3.4vw, 40px);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-}
-
-.places {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.place {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  height: 100%;
-  padding: 18px 20px 20px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-raised);
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color 140ms ease,
-    box-shadow 140ms ease,
-    transform 140ms ease;
-}
-
-.place:hover {
-  border-color: var(--accent);
-  box-shadow: 0 8px 24px -14px var(--shadow);
-  transform: translateY(-1px);
-}
-
-.placeAddress {
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-}
-
-.placeTitle {
-  margin-top: 4px;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-}
-
-.placeBlurb {
-  color: var(--ink-soft);
-  font-size: 14px;
-  line-height: 1.45;
+/* The shared Button, with a glow so it reads as the way in. */
+.heroActions .cta {
+  box-shadow: 0 0 36px -8px rgb(61 252 143 / 70%);
 }
 
 /* Nowhere and status pages */
@@ -303,41 +245,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 16px;
   margin-top: 28px;
-}
-
-.primary,
-.secondary {
-  padding: 9px 18px;
-  border-radius: 10px;
-  font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 140ms ease,
-    border-color 140ms ease;
-}
-
-.primary {
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--on-accent);
-}
-
-.primary:hover {
-  background: var(--accent-strong);
-}
-
-.secondary {
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--ink);
-}
-
-.secondary:hover {
-  border-color: var(--ink-faint);
 }
 
 @media (max-width: 640px) {
@@ -346,17 +255,33 @@
   }
 
   .hero {
-    padding: 56px 16px 72px;
+    padding: calc(var(--nav-space) + 32px) 16px 72px;
   }
 
   .lineBright {
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  /* On a phone they sit further out and fainter, so the words stay clear. */
+  .knotLead {
+    top: calc(var(--nav-space) + 4px);
+    left: -90px;
+    width: 150px;
+    opacity: 0.6;
+  }
+
+  .knotEcho {
+    right: -60px;
+    bottom: 3%;
+    width: 130px;
+    opacity: 0.55;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glyph {
+  .glyph,
+  .knot {
     animation: none;
   }
 }

@@ -2,6 +2,7 @@
 
 import type { Visit, VisitVia } from '@small-web/contracts';
 import { useCallback } from 'react';
+import { Button } from '@/components/Button';
 import { listVisits } from '@/lib/api-client';
 import { useRestoringPager } from '../viewport/useRestoringPager';
 import styles from './HistoryPage.module.css';
@@ -105,9 +106,9 @@ export function HistoryPage({
           ) : state === 'error' ? (
             <>
               <span>Could not load the history.</span>
-              <button type="button" className={styles.retry} onClick={loadMore}>
+              <Button variant="outline" size="sm" onClick={loadMore}>
                 Try again
-              </button>
+              </Button>
             </>
           ) : complete && items.length === 0 ? (
             <span>

@@ -7,6 +7,7 @@ import {
   publishSchema,
 } from '@small-web/contracts';
 import { type SubmitEvent, useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/Button';
 import { ApiRequestError, publishPage } from '@/lib/api-client';
 import {
   clearDraft,
@@ -221,13 +222,14 @@ export function PublishPage({
             ) : null}
 
             <div className={styles.actions}>
-              <button
+              <Button
                 type="submit"
-                className={styles.publish}
+                variant="neon"
+                size="lg"
                 disabled={sending}
               >
                 {sending ? 'Publishing…' : 'Publish'}
-              </button>
+              </Button>
             </div>
           </form>
 

@@ -1,5 +1,6 @@
 .pane {
   height: 100%;
+  padding-top: var(--nav-space);
   overflow-y: auto;
   background: var(--surface);
   color: var(--ink);
@@ -65,21 +66,13 @@
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
-.submit {
-  flex: none;
-  padding: 0 18px;
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  background: var(--accent);
-  color: var(--on-accent);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
+/* The shared Button, as tall as the field beside it. */
+.form .submit {
+  height: auto;
+  align-self: stretch;
 
-.submit:hover {
-  background: var(--accent-strong);
+  /* Room for the slanted corners, so they stay inside the row. */
+  margin: 0 8px 0 6px;
 }
 
 .results {
@@ -169,16 +162,3 @@
   text-align: center;
 }
 
-.retry {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.retry:hover {
-  text-decoration: underline;
-}

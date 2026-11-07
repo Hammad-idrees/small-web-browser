@@ -47,11 +47,24 @@ export const PublishIcon = () => (
   </Icon>
 );
 
+export const ArrowUpRightIcon = () => (
+  <Icon>
+    <path d="M7 17 17 7" />
+    <path d="M8 7h9v9" />
+  </Icon>
+);
+
 export const HistoryIcon = () => (
   <Icon>
     <path d="M3.5 12a8.5 8.5 0 1 0 2.5-6" />
     <path d="M3.5 4.5V9h4.5" />
     <path d="M12 7.5V12l3 2" />
+  </Icon>
+);
+
+export const CheckIcon = () => (
+  <Icon>
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
   </Icon>
 );
 

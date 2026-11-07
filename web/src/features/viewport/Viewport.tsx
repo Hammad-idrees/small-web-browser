@@ -58,6 +58,10 @@ export function Viewport({
     [open],
   );
 
+  const openPublish = useCallback(() => {
+    navigator.navigate({ kind: 'publish' });
+  }, [navigator]);
+
   const openFromSearch = useCallback(
     (address: string) => {
       open(address, 'search');
@@ -119,7 +123,13 @@ export function Viewport({
         />
       );
     case 'home':
-      return <HomePage personName={personName} onOpen={openFromStartPage} />;
+      return (
+        <HomePage
+          personName={personName}
+          onOpen={openFromStartPage}
+          onPublish={openPublish}
+        />
+      );
     case 'search':
       return (
         <SearchPage

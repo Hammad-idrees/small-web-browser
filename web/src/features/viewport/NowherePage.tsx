@@ -1,3 +1,4 @@
+import { Button } from '@/components/Button';
 import styles from './pages.module.css';
 
 interface NowherePageProps {
@@ -35,13 +36,13 @@ export function NowherePage({
 
         <div className={styles.actions}>
           {canGoBack ? (
-            <button type="button" className={styles.primary} onClick={onBack}>
+            <Button variant="solid" onClick={onBack}>
               Go back
-            </button>
+            </Button>
           ) : null}
-          <button type="button" className={styles.secondary} onClick={onHome}>
+          <Button variant="outline" onClick={onHome}>
             Start page
-          </button>
+          </Button>
         </div>
       </div>
     </div>

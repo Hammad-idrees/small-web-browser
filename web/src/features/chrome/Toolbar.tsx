@@ -1,10 +1,12 @@
 'use client';
 
 import type { Person } from '@small-web/contracts';
+import { Button } from '@/components/Button';
 import type { Route } from '../navigation/route-codec';
 import type { TrailLocation } from '../navigation/trail';
 import { AddressBar } from './AddressBar';
 import {
+  ArrowUpRightIcon,
   BackIcon,
   ForwardIcon,
   HistoryIcon,
@@ -97,9 +99,9 @@ export function Toolbar({
       />
 
       <div className={styles.actions}>
-        <button
-          type="button"
-          className={styles.pill}
+        <Button
+          variant="outline"
+          className={`${styles.navButton} ${styles.historyButton}`}
           aria-label="History"
           title="History"
           aria-current={location?.kind === 'history' ? 'page' : undefined}
@@ -109,12 +111,12 @@ export function Toolbar({
           }}
         >
           <HistoryIcon />
-          <span className={styles.pillText}>History</span>
-        </button>
+          <span className={styles.navText}>History</span>
+        </Button>
 
-        <button
-          type="button"
-          className={`${styles.pill} ${styles.pillNeon}`}
+        <Button
+          variant="neon"
+          className={`${styles.navButton} ${styles.publishButton}`}
           aria-label="Publish"
           title="Publish a page"
           aria-current={location?.kind === 'publish' ? 'page' : undefined}
@@ -123,9 +125,14 @@ export function Toolbar({
             onNavigate({ kind: 'publish' });
           }}
         >
-          <PublishIcon />
-          <span className={styles.pillText}>Publish</span>
-        </button>
+          <span className={styles.narrowOnly}>
+            <PublishIcon />
+          </span>
+          <span className={styles.navText}>Publish</span>
+          <span className={styles.wideOnly}>
+            <ArrowUpRightIcon />
+          </span>
+        </Button>
       </div>
 
       <PersonPicker

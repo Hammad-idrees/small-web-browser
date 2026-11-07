@@ -1,0 +1,148 @@
+/*
+ * A skewed button with a colour that sweeps in from the left.
+ * Each variant only sets the five colours below; the motion is shared.
+ */
+.button {
+  --skew: -21deg;
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --edge: #ffffff;
+  --fill: rgb(20 20 20);
+  --fill-fg: #ffffff;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+
+  /* Keeps the sweep's z-index: -1 above the button's own background. */
+  isolation: isolate;
+  min-width: 120px;
+  height: 42px;
+  padding: 0 20px;
+  border: 1px solid var(--edge);
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: skew(var(--skew));
+  transition:
+    color 0.5s,
+    border-color 0.5s,
+    box-shadow 0.3s;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 100%;
+  bottom: 0;
+  left: 0;
+  background: var(--fill);
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.button:hover:not(:disabled),
+.button:focus-visible {
+  border-color: var(--fill);
+  color: var(--fill-fg);
+}
+
+.button:hover:not(:disabled)::before,
+.button:focus-visible::before {
+  right: 0;
+  opacity: 1;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--neon);
+  outline-offset: 3px;
+}
+
+.button:active:not(:disabled) {
+  transform: skew(var(--skew)) scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Upright again inside the slant. */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transform: skew(calc(-1 * var(--skew)));
+}
+
+.label svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Variants */
+
+.neon {
+  --bg: var(--neon);
+  --fg: var(--on-neon);
+  --edge: var(--neon);
+  --fill: #0a0a0a;
+  --fill-fg: var(--neon);
+}
+
+.neon:hover:not(:disabled) {
+  box-shadow: 0 0 24px -6px var(--neon);
+}
+
+.light {
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --edge: #ffffff;
+  --fill: rgb(20 20 20);
+  --fill-fg: #ffffff;
+}
+
+/* Black on a light page, white on a dark one; the sweep is the page's accent. */
+.solid {
+  --bg: var(--ink);
+  --fg: var(--surface);
+  --edge: var(--ink);
+  --fill: var(--accent);
+  --fill-fg: var(--on-accent);
+}
+
+.outline {
+  --bg: transparent;
+  --fg: var(--ink);
+  --edge: var(--line);
+  --fill: var(--ink);
+  --fill-fg: var(--surface);
+}
+
+/* Sizes */
+
+.sm {
+  min-width: 0;
+  height: 30px;
+  padding: 0 12px;
+  font-size: 11.5px;
+}
+
+.lg {
+  min-width: 180px;
+  height: 52px;
+  padding: 0 30px;
+  font-size: 16px;
+}

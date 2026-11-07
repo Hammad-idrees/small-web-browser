@@ -1,6 +1,7 @@
 'use client';
 
 import { type SubmitEvent, useRef } from 'react';
+import { Button } from '@/components/Button';
 import { type Route, routeFromInput } from '../navigation/route-codec';
 import type { TrailLocation } from '../navigation/trail';
 import { SearchIcon } from './icons';
@@ -74,9 +75,14 @@ export function AddressBar({
         <span className={styles.byline}>by {location.authorName}</span>
       ) : null}
       {onEdit ? (
-        <button type="button" className={styles.edit} onClick={onEdit}>
+        <Button
+          variant="outline"
+          size="sm"
+          className={styles.edit}
+          onClick={onEdit}
+        >
           Edit
-        </button>
+        </Button>
       ) : null}
     </form>
   );

@@ -1,40 +1,41 @@
+import Image from 'next/image';
+import { Button } from '@/components/Button';
+import { HomeSections } from './HomeSections';
 import styles from './pages.module.css';
 
 const FIRST_STOP = 'tidepool.zz';
 
-const PLACES_TO_BEGIN = [
-  {
-    address: 'tidepool.zz',
-    title: 'The Tide Pool Journal',
-    blurb: 'Eleven years of notes on the same few rock pools.',
-  },
-  {
-    address: 'oldmaps.zz',
-    title: 'Old Maps, Wrong Maps',
-    blurb: 'Honest charts, careful people, and islands that never were.',
-  },
-  {
-    address: 'nightferry.zz',
-    title: 'Notes from the Night Ferry',
-    blurb: 'The last boat of the day, and the dozen people on it.',
-  },
-  {
-    address: 'slowdough.zz',
-    title: 'Slow Dough',
-    blurb: 'A nine-year-old starter called Gerald, and what it taught.',
-  },
-] as const;
-
 interface HomePageProps {
   readonly personName: string | undefined;
   readonly onOpen: (address: string) => void;
+  readonly onPublish: () => void;
 }
 
-export function HomePage({ personName, onOpen }: HomePageProps) {
+export function HomePage({ personName, onOpen, onPublish }: HomePageProps) {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroGlow} aria-hidden="true" />
+        {/* Decoration only: two copies of the same knot, drifting in opposite corners. */}
+        <Image
+          className={`${styles.knot} ${styles.knotLead}`}
+          src="/hero/emerald.webp"
+          alt=""
+          aria-hidden="true"
+          width={900}
+          height={900}
+          sizes="(max-width: 720px) 150px, 300px"
+          priority
+        />
+        <Image
+          className={`${styles.knot} ${styles.knotEcho}`}
+          src="/hero/emerald.webp"
+          alt=""
+          aria-hidden="true"
+          width={900}
+          height={900}
+          sizes="(max-width: 720px) 130px, 250px"
+        />
 
         <p className={styles.chip}>
           <span className={styles.chipDot} aria-hidden="true" />
@@ -55,42 +56,20 @@ export function HomePage({ personName, onOpen }: HomePageProps) {
         </p>
 
         <div className={styles.heroActions}>
-          <button
-            type="button"
+          <Button
+            variant="neon"
+            size="lg"
             className={styles.cta}
             onClick={() => {
               onOpen(FIRST_STOP);
             }}
           >
             Start wandering
-          </button>
+          </Button>
         </div>
       </section>
 
-      <section className={styles.begin} aria-labelledby="places-to-begin">
-        <div className={styles.beginInner}>
-          <h2 id="places-to-begin" className={styles.beginTitle}>
-            Places to begin
-          </h2>
-          <ul className={styles.places}>
-            {PLACES_TO_BEGIN.map((place) => (
-              <li key={place.address}>
-                <button
-                  type="button"
-                  className={styles.place}
-                  onClick={() => {
-                    onOpen(place.address);
-                  }}
-                >
-                  <span className={styles.placeAddress}>{place.address}</span>
-                  <span className={styles.placeTitle}>{place.title}</span>
-                  <span className={styles.placeBlurb}>{place.blurb}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <HomeSections onOpen={onOpen} onPublish={onPublish} />
     </div>
   );
 }

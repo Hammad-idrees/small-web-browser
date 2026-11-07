@@ -22,6 +22,11 @@
   --neon-glow: rgb(61 252 143 / 22%);
   --on-neon: #04140b;
 
+  /* The navbar floats over the page. Pages start below it and scroll under it. */
+  --nav-top: 14px;
+  --nav-height: 68px;
+  --nav-space: calc(var(--nav-top) + var(--nav-height) + 14px);
+
   --surface: #fbfaf6;
   --surface-raised: #ffffff;
   --surface-sunken: #efece4;
@@ -67,6 +72,15 @@
     --alert-line: #5c3e2f;
     --avatar-lightness: 30%;
     --avatar-ink: 86%;
+  }
+}
+
+/* On a phone the navbar has two rows. */
+@media (max-width: 720px) {
+  :root {
+    --nav-top: 8px;
+    --nav-height: 110px;
+    --nav-space: calc(var(--nav-top) + var(--nav-height) + 10px);
   }
 }
 

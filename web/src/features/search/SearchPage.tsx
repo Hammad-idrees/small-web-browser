@@ -6,6 +6,7 @@ import {
   type SearchResult,
 } from '@small-web/contracts';
 import { type ReactNode, type SubmitEvent, useCallback } from 'react';
+import { Button } from '@/components/Button';
 import { searchSites } from '@/lib/api-client';
 import { useRestoringPager } from '../viewport/useRestoringPager';
 import styles from './SearchPage.module.css';
@@ -81,9 +82,9 @@ export function SearchPage({
               autoComplete="off"
               enterKeyHint="search"
             />
-            <button type="submit" className={styles.submit}>
+            <Button type="submit" variant="solid" className={styles.submit}>
               Search
-            </button>
+            </Button>
           </form>
         </header>
 
@@ -122,9 +123,9 @@ export function SearchPage({
           ) : state === 'error' ? (
             <>
               <span>The search could not be finished.</span>
-              <button type="button" className={styles.retry} onClick={loadMore}>
+              <Button variant="outline" size="sm" onClick={loadMore}>
                 Try again
-              </button>
+              </Button>
             </>
           ) : complete && items.length === 0 ? (
             <span>

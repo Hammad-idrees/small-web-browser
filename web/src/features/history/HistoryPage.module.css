@@ -1,5 +1,6 @@
 .pane {
   height: 100%;
+  padding-top: var(--nav-space);
   overflow-y: auto;
   background: var(--surface);
   color: var(--ink);
@@ -48,7 +49,7 @@
 .dayLabel {
   position: sticky;
   z-index: 1;
-  top: 0;
+  top: var(--nav-space);
   margin: 0;
   padding: 10px 0 8px;
   border-bottom: 1px solid var(--line);
@@ -143,20 +144,6 @@
   color: var(--ink-faint);
   font-size: 14px;
   text-align: center;
-}
-
-.retry {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--accent);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.retry:hover {
-  text-decoration: underline;
 }
 
 @media (max-width: 640px) {

@@ -3,18 +3,41 @@
   --ink: var(--chrome-ink);
   --ink-soft: var(--chrome-ink-soft);
   --ink-faint: var(--chrome-ink-faint);
-  --control: var(--chrome-raised);
-  --control-hover: var(--chrome-hover);
-  --line: var(--chrome-line);
-  --surface-raised: #0b0b0b;
+  --control: rgb(255 255 255 / 5%);
+  --control-hover: rgb(255 255 255 / 9%);
+  --line: rgb(255 255 255 / 8%);
+  --surface-raised: rgb(8 8 8 / 70%);
+  --surface: #0a0a0a;
   --accent: var(--neon);
   --accent-glow: var(--neon-glow);
 
-  position: relative;
+  /* Floats above the page, a gap below the top, and the page scrolls beneath it. */
+  position: absolute;
+  z-index: 20;
+  top: var(--nav-top);
+  right: 16px;
+  left: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
+  gap: 14px;
+  max-width: 1200px;
+  height: var(--nav-height);
+  margin: 0 auto;
+  padding: 0 12px 0 14px;
+
+  /* Dark glass: see-through, blurred, with a light rim on top. */
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgb(26 26 26 / 78%),
+    rgb(10 10 10 / 72%)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 7%),
+    0 18px 40px -20px rgb(0 0 0 / 85%);
+  /* Written once: the CSS build adds the -webkit- copy Safari needs. */
+  backdrop-filter: blur(40px) saturate(170%);
   color: var(--ink);
   color-scheme: dark;
 }
@@ -44,28 +67,49 @@
     transform 120ms ease;
 }
 
-.logo {
-  display: flex;
-  gap: 9px;
-  width: auto;
-  margin-right: 14px;
-  padding: 0 8px 0 4px;
+.iconButton {
+  border-radius: 999px;
 }
 
+.logo {
+  display: flex;
+  gap: 10px;
+  width: auto;
+  height: 40px;
+  margin-right: 10px;
+  padding: 0 10px 0 0;
+  border-radius: 12px;
+}
+
+/* The mark sits on a neon tile, dark on green. */
 .logoMark {
   display: grid;
-  color: var(--neon);
-  filter: drop-shadow(0 0 6px var(--neon-glow));
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--neon);
+  color: var(--on-neon);
+  box-shadow: 0 0 18px -4px var(--neon-glow);
+  transition: box-shadow 160ms ease;
+}
+
+.logoMark svg {
+  width: 22px;
+  height: 22px;
 }
 
 .wordmark {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   white-space: nowrap;
 }
 
-.logo:hover:not(:disabled),
+.logo:hover:not(:disabled) .logoMark {
+  box-shadow: 0 0 22px -2px rgb(61 252 143 / 45%);
+}
+
 .iconButton:hover:not(:disabled) {
   background: var(--control-hover);
 }
@@ -86,70 +130,40 @@
   display: flex;
   flex: none;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 0 6px;
 }
 
-.pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  height: 36px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--control);
-  color: var(--ink);
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  transition:
-    background-color 120ms ease,
-    border-color 120ms ease,
-    box-shadow 120ms ease,
-    transform 120ms ease;
+/* The shared Button, sized for the navbar. Two classes, so it outranks the defaults. */
+.actions .navButton {
+  min-width: 0;
+  height: 40px;
+  padding: 0 18px;
+  font-size: 13px;
 }
 
-.pill svg {
-  width: 16px;
-  height: 16px;
+/* Where you are: History outlined in neon, Publish ringed with a glow. */
+.actions .historyButton[aria-current='page'] {
+  --edge: var(--neon);
+  --fg: var(--neon);
 }
 
-.pill:hover:not(:disabled) {
-  border-color: #333333;
-  background: var(--control-hover);
-}
-
-.pill:active:not(:disabled) {
-  transform: scale(0.97);
-}
-
-.pill[aria-current='page'] {
-  border-color: var(--neon);
-  color: var(--neon);
-}
-
-.pillNeon {
-  border-color: var(--neon);
-  background: var(--neon);
-  color: var(--on-neon);
-  font-weight: 600;
-}
-
-.pillNeon:hover:not(:disabled) {
-  border-color: var(--neon-strong);
-  background: var(--neon-strong);
-  box-shadow: 0 0 18px var(--neon-glow);
-}
-
-.pillNeon[aria-current='page'] {
-  color: var(--on-neon);
+.actions .publishButton[aria-current='page'] {
   box-shadow: 0 0 0 3px var(--neon-glow);
 }
 
-.pill:disabled {
-  opacity: 0.5;
-  cursor: default;
+.actions .navButton:hover .wideOnly {
+  transform: translate(2px, -2px);
+}
+
+.wideOnly,
+.narrowOnly {
+  display: grid;
+  transition: transform 140ms ease;
+}
+
+.narrowOnly {
+  display: none;
 }
 
 /* Address bar */
@@ -160,10 +174,10 @@
   align-items: center;
   gap: 10px;
   min-width: 0;
-  height: 40px;
-  padding: 0 14px;
+  height: 42px;
+  padding: 0 16px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--control);
   transition:
     background-color 120ms ease,
@@ -237,21 +251,9 @@
   white-space: nowrap;
 }
 
+/* Edit is the shared Button; this only keeps it from crowding the byline. */
 .edit {
-  flex: none;
-  padding: 3px 10px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--surface-raised);
-  color: var(--accent);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.edit:hover {
-  border-color: var(--accent);
+  margin-left: 4px;
 }
 
 /* Only while typing. Hiding them on any focus would hide Edit as it is clicked. */
@@ -260,89 +262,13 @@
   display: none;
 }
 
-/* Person picker */
-
-.person {
-  position: relative;
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: 8px;
-  height: 40px;
-  padding: 0 8px 0 6px;
-  border-radius: 12px;
-  transition: background-color 120ms ease;
-}
-
-.person:hover {
-  background: var(--control-hover);
-}
-
-.person:focus-within {
-  box-shadow: 0 0 0 2px var(--accent);
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: hsl(var(--avatar-hue, 172) 42% var(--avatar-lightness));
-  color: hsl(var(--avatar-hue, 172) 55% var(--avatar-ink));
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.02em;
-}
-
-.personName {
-  font-size: 13.5px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.personChevron {
-  display: grid;
-  place-items: center;
-  width: 14px;
-  color: var(--ink-faint);
-}
-
-.personChevron svg {
-  width: 14px;
-  height: 14px;
-}
-
-.personSelect {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.personSelect:disabled {
-  cursor: default;
-}
-
-.visuallyHidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 /* Progress */
 
 .progress {
   position: absolute;
-  right: 0;
+  right: 28px;
   bottom: -1px;
-  left: 0;
+  left: 28px;
   height: 2px;
   overflow: hidden;
   opacity: 0;
@@ -385,10 +311,28 @@
 }
 
 @media (max-width: 720px) {
+  /* Two rows on a phone, so a softer corner than a full capsule. */
   .toolbar {
+    right: 8px;
+    left: 8px;
     flex-wrap: wrap;
-    gap: 6px 8px;
-    padding: 8px 10px;
+    align-content: center;
+    gap: 8px;
+    padding: 0 8px;
+    border-radius: 24px;
+  }
+
+  .wideOnly {
+    display: none;
+  }
+
+  .narrowOnly {
+    display: grid;
+  }
+
+  .actions .navButton {
+    width: 46px;
+    padding: 0;
   }
 
   .addressBar {
@@ -405,21 +349,23 @@
   }
 
   .byline,
-  .pillText,
-  .personName {
+  .navText {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .wordmark {
     display: none;
   }
 
-  .pill {
-    width: 36px;
-    padding: 0;
-    justify-content: center;
+  .logo {
+    padding-right: 0;
   }
 }
 
 @media (max-width: 1000px) and (min-width: 721px) {
-  .wordmark,
-  .personName {
+  .wordmark {
     display: none;
   }
 }
