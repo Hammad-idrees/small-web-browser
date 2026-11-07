@@ -172,8 +172,15 @@
   line-height: 1.02;
 }
 
+/*
+ * Gradient text paints only inside the line's box, and the tight line height
+ * leaves the tails of g, p and y below it, unpainted. Extra room at the bottom,
+ * taken back with a negative margin, paints them without moving the lines.
+ */
 .lineFaint,
 .lineMid {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
   background-clip: text;
   color: transparent;
   -webkit-background-clip: text;

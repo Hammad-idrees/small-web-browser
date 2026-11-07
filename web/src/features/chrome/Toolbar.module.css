@@ -1,11 +1,17 @@
-/* The toolbar is always black, whatever the page below it uses. */
+/*
+ * The toolbar is always black, whatever the page below it uses.
+ *
+ * Its text colours are set for WCAG AA (4.5:1) against the glass as it actually
+ * renders over a white page, which is lighter than the glass's own colour:
+ * soft text ~8:1, faint text (placeholder, chevrons) ~5:1.
+ */
 .toolbar {
   --ink: var(--chrome-ink);
-  --ink-soft: var(--chrome-ink-soft);
-  --ink-faint: var(--chrome-ink-faint);
-  --control: rgb(255 255 255 / 5%);
-  --control-hover: rgb(255 255 255 / 9%);
-  --line: rgb(255 255 255 / 8%);
+  --ink-soft: #c4c4c4;
+  --ink-faint: #ababab;
+  --control: rgb(255 255 255 / 7%);
+  --control-hover: rgb(255 255 255 / 12%);
+  --line: rgb(255 255 255 / 10%);
   --surface-raised: rgb(8 8 8 / 70%);
   --surface: #0a0a0a;
   --accent: var(--neon);
@@ -24,13 +30,17 @@
   margin: 0 auto;
   padding: 0 12px 0 14px;
 
-  /* Dark glass: see-through, blurred, with a light rim on top. */
-  border: 1px solid rgb(255 255 255 / 9%);
+  /*
+   * Dark glass, dense enough to read as black over white pages (about 92%):
+   * at 75% the white behind turned it a muddy mid-grey. Still blurred, so
+   * colours behind it show faintly, with a light rim on top.
+   */
+  border: 1px solid rgb(255 255 255 / 10%);
   border-radius: 999px;
   background: linear-gradient(
     180deg,
-    rgb(26 26 26 / 78%),
-    rgb(10 10 10 / 72%)
+    rgb(20 20 20 / 93%),
+    rgb(6 6 6 / 92%)
   );
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 7%),
@@ -115,9 +125,9 @@
   transform: scale(0.92);
 }
 
+/* Dimmer than an active arrow, but still clearly there: about 3:1 on the glass. */
 .iconButton:disabled {
-  color: var(--ink-faint);
-  opacity: 0.55;
+  color: #7a7a7a;
   cursor: default;
 }
 
