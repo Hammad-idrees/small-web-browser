@@ -12,7 +12,8 @@ concurrency:
 jobs:
   check:
     name: Lint, typecheck and test
-    runs-on: ubuntu-latest
+    # Pinned, so a change of what "latest" means cannot change CI unannounced.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     services:
@@ -20,21 +21,29 @@ jobs:
         image: mongo:8
         ports:
           - 27017:27017
-        options: >-
-          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: pnpm
+
+      # Mongo starts alongside the job; wait here until it accepts connections.
+      - name: Wait for MongoDB
+        run: |
+          for attempt in $(seq 1 30); do
+            if nc -z localhost 27017; then
+              echo "MongoDB is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "MongoDB did not start" >&2
+          exit 1
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -62,8 +71,9 @@ jobs:
 
       - name: Keep the browser test report
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-report
           path: e2e/playwright-report
+          if-no-files-found: ignore
           retention-days: 7
